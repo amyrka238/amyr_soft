@@ -1,3 +1,7 @@
+-- Подключение Kavo UI
+local Library = loadstring(game:HttpGet("https://raw.githubusercontent.com/xHeptc/Kavo-UI-Library/main/source.lua"))()
+local Window = Library.CreateLib("🌦️ Управление погодой", "DarkTheme")
+
 -------------------------------------------------------
 -- Вкладка Weather
 -------------------------------------------------------
