@@ -56,6 +56,7 @@ local themes = {
     ElementColor = Color3.fromRGB(32, 32, 38)
 }
 local themeStyles = {
+local themeStyles = {
     DarkTheme = {
         SchemeColor = Color3.fromRGB(90, 90, 90),      -- более мягкий акцент
         Background = Color3.fromRGB(10, 10, 10),      -- глубокий темный фон
@@ -120,7 +121,6 @@ local themeStyles = {
         ElementColor = Color3.fromRGB(22, 32, 34)     -- панели
     }
 }
-
 local oldTheme = ""
 
 local SettingsT = {
