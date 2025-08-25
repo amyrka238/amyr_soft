@@ -85,11 +85,11 @@ local themeStyles = {
         ElementColor = Color3.fromRGB(80, 60, 90)     -- панели/кнопки
     },
     Ocean = {
-        SchemeColor = Color3.fromRGB(88, 164, 255),   -- яркий океанский синий
-        Background = Color3.fromRGB(12, 20, 40),      -- глубокий ночной фон
-        Header = Color3.fromRGB(20, 32, 60),          -- тёмный хедер
-        TextColor = Color3.fromRGB(220, 240, 255),    -- легкий морской оттенок текста
-        ElementColor = Color3.fromRGB(24, 42, 72)     -- панели и кнопки
+        SchemeColor = Color3.fromRGB(86, 76, 251),
+        Background = Color3.fromRGB(26, 32, 58),
+        Header = Color3.fromRGB(38, 45, 71),
+        TextColor = Color3.fromRGB(200, 200, 200),
+        ElementColor = Color3.fromRGB(38, 45, 71)
     },
     Midnight = {
         SchemeColor = Color3.fromRGB(30, 200, 170),   -- яркий акцент “океан + ночь”
