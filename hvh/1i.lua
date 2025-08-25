@@ -57,69 +57,70 @@ local themes = {
 }
 local themeStyles = {
     DarkTheme = {
-        SchemeColor = Color3.fromRGB(64, 64, 64),
-        Background = Color3.fromRGB(0, 0, 0),
-        Header = Color3.fromRGB(0, 0, 0),
-        TextColor = Color3.fromRGB(255,255,255),
-        ElementColor = Color3.fromRGB(20, 20, 20)
+        SchemeColor = Color3.fromRGB(90, 90, 90),      -- более мягкий акцент
+        Background = Color3.fromRGB(10, 10, 10),      -- глубокий темный фон
+        Header = Color3.fromRGB(18, 18, 18),          -- чуть светлее фона для контраста
+        TextColor = Color3.fromRGB(230, 230, 230),    -- мягкий белый для глаз
+        ElementColor = Color3.fromRGB(30, 30, 30)     -- чуть светлее для кнопок/панелей
     },
     LightTheme = {
-        SchemeColor = Color3.fromRGB(150, 150, 150),
-        Background = Color3.fromRGB(255,255,255),
-        Header = Color3.fromRGB(200, 200, 200),
-        TextColor = Color3.fromRGB(0,0,0),
-        ElementColor = Color3.fromRGB(224, 224, 224)
+        SchemeColor = Color3.fromRGB(180, 180, 180),  -- более выразительный серый
+        Background = Color3.fromRGB(245, 245, 245),   -- не чистый белый, глаза не устают
+        Header = Color3.fromRGB(210, 210, 210),       -- мягкий контраст
+        TextColor = Color3.fromRGB(20, 20, 20),       -- тёмный текст
+        ElementColor = Color3.fromRGB(230, 230, 230)  -- лёгкий контраст для кнопок
     },
     BloodTheme = {
-        SchemeColor = Color3.fromRGB(227, 27, 27),
-        Background = Color3.fromRGB(10, 10, 10),
-        Header = Color3.fromRGB(5, 5, 5),
-        TextColor = Color3.fromRGB(255,255,255),
-        ElementColor = Color3.fromRGB(20, 20, 20)
+        SchemeColor = Color3.fromRGB(255, 50, 50),    -- яркий кровавый акцент
+        Background = Color3.fromRGB(15, 0, 0),        -- глубокий тёмно-красный фон
+        Header = Color3.fromRGB(30, 0, 0),            -- чуть светлее фон для хедера
+        TextColor = Color3.fromRGB(255, 220, 220),    -- мягкий светлый текст
+        ElementColor = Color3.fromRGB(40, 0, 0)       -- тёмные панели с оттенком красного
     },
     GrapeTheme = {
-        SchemeColor = Color3.fromRGB(166, 71, 214),
-        Background = Color3.fromRGB(64, 50, 71),
-        Header = Color3.fromRGB(36, 28, 41),
-        TextColor = Color3.fromRGB(255,255,255),
-        ElementColor = Color3.fromRGB(74, 58, 84)
+        SchemeColor = Color3.fromRGB(180, 80, 230),   -- яркий виноградный акцент
+        Background = Color3.fromRGB(60, 45, 75),      -- тёмный фон под виноград
+        Header = Color3.fromRGB(40, 30, 55),          -- темный хедер
+        TextColor = Color3.fromRGB(240, 240, 255),    -- светлый текст с легким холодным оттенком
+        ElementColor = Color3.fromRGB(80, 60, 90)     -- панели/кнопки
     },
     Ocean = {
-        SchemeColor = Color3.fromRGB(88, 164, 255),
-        Background = Color3.fromRGB(12, 20, 40),
-        Header = Color3.fromRGB(20, 32, 60)),
-        TextColor = Color3.fromRGB(255, 255, 255),
-        ElementColor = Color3.fromRGB(24, 42, 72)
+        SchemeColor = Color3.fromRGB(88, 164, 255),   -- яркий океанский синий
+        Background = Color3.fromRGB(12, 20, 40),      -- глубокий ночной фон
+        Header = Color3.fromRGB(20, 32, 60),          -- тёмный хедер
+        TextColor = Color3.fromRGB(220, 240, 255),    -- легкий морской оттенок текста
+        ElementColor = Color3.fromRGB(24, 42, 72)     -- панели и кнопки
     },
     Midnight = {
-        SchemeColor = Color3.fromRGB(26, 189, 158),
-        Background = Color3.fromRGB(44, 62, 82),
-        Header = Color3.fromRGB(57, 81, 105),
-        TextColor = Color3.fromRGB(255, 255, 255),
-        ElementColor = Color3.fromRGB(52, 74, 95)
+        SchemeColor = Color3.fromRGB(30, 200, 170),   -- яркий акцент “океан + ночь”
+        Background = Color3.fromRGB(40, 60, 85),      -- тёмный фон
+        Header = Color3.fromRGB(60, 85, 115),         -- мягкий контраст для хедера
+        TextColor = Color3.fromRGB(240, 250, 255),    -- светлый текст
+        ElementColor = Color3.fromRGB(50, 75, 100)    -- панели и кнопки
     },
     Sentinel = {
-        SchemeColor = Color3.fromRGB(230, 35, 69),
-        Background = Color3.fromRGB(32, 32, 32),
-        Header = Color3.fromRGB(24, 24, 24),
-        TextColor = Color3.fromRGB(119, 209, 138),
-        ElementColor = Color3.fromRGB(24, 24, 24)
+        SchemeColor = Color3.fromRGB(245, 60, 90),    -- насыщенный розово-красный акцент
+        Background = Color3.fromRGB(25, 25, 25),      -- глубокий тёмный фон
+        Header = Color3.fromRGB(35, 35, 35),          -- чуть светлее хедер
+        TextColor = Color3.fromRGB(130, 220, 150),    -- яркий контрастный текст
+        ElementColor = Color3.fromRGB(30, 30, 30)     -- панели
     },
     Synapse = {
-        SchemeColor = Color3.fromRGB(46, 48, 43),
-        Background = Color3.fromRGB(13, 15, 12),
-        Header = Color3.fromRGB(36, 38, 35),
-        TextColor = Color3.fromRGB(152, 99, 53),
-        ElementColor = Color3.fromRGB(24, 24, 24)
+        SchemeColor = Color3.fromRGB(60, 62, 57),     -- мягкий тёмно-серый акцент
+        Background = Color3.fromRGB(15, 15, 12),      -- глубокий фон
+        Header = Color3.fromRGB(40, 42, 37),          -- хедер
+        TextColor = Color3.fromRGB(180, 120, 70),     -- текст с тёплым оттенком
+        ElementColor = Color3.fromRGB(30, 30, 30)     -- панели
     },
     Serpent = {
-        SchemeColor = Color3.fromRGB(0, 166, 58),
-        Background = Color3.fromRGB(31, 41, 43),
-        Header = Color3.fromRGB(22, 29, 31),
-        TextColor = Color3.fromRGB(255,255,255),
-        ElementColor = Color3.fromRGB(22, 29, 31)
+        SchemeColor = Color3.fromRGB(0, 180, 70),     -- яркий зеленый акцент
+        Background = Color3.fromRGB(25, 35, 37),      -- глубокий темный фон
+        Header = Color3.fromRGB(20, 30, 32),          -- хедер
+        TextColor = Color3.fromRGB(230, 255, 230),    -- светлый текст
+        ElementColor = Color3.fromRGB(22, 32, 34)     -- панели
     }
 }
+
 local oldTheme = ""
 
 local SettingsT = {
