@@ -85,11 +85,11 @@ local themeStyles = {
         ElementColor = Color3.fromRGB(74, 58, 84)
     },
     Ocean = {
-		SchemeColor = Color3.fromRGB(95, 182, 255)
-		Background = Color3.fromRGB(15, 24, 47)
-		Header = Color3.fromRGB(22, 36, 65)
-		TextColor = Color3.fromRGB(220, 220, 220
-		ElementColor = Color3.fromRGB(28, 48, 80) 
+		SchemeColor = Color3.fromRGB(30, 50, 90)
+		Background = Color3.fromRGB(44, 62, 130
+		Header = Color3.fromRGB(220, 220, 220)
+		TextColor = Color3.fromRGB(255, 255, 255)
+		ElementColor = Color3.fromRGB(5, 124, 161) 
     },
     Midnight = {
         SchemeColor = Color3.fromRGB(26, 189, 158),
