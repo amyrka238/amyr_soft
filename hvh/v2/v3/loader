@@ -1,6 +1,6 @@
 -- ╔══════════════════════════════════════════════════════════════╗
 -- ║                    AMYR_SOFTIKK THEME LOADER                 ║
--- ║                    Free Edition v3.2 (Improved)              ║
+-- ║                    Free Edition v3.1 (Improved)              ║
 -- ║                    t.me/amyr_softikk                         ║
 -- ╚══════════════════════════════════════════════════════════════╝
 
@@ -15,25 +15,80 @@ local HttpService = game:GetService("HttpService")
 local SoundService = game:GetService("SoundService")
 local GuiService = game:GetService("GuiService")
 
--- Loader Animation System (Fixed)
+-- Loader Animation System (Ultra Stable)
 local LoaderAnimation = {}
 local loaderFinished = false
+
+-- Cache services for better performance and stability
+local TweenService = game:GetService("TweenService")
+local RunService = game:GetService("RunService")
+local Players = game:GetService("Players")
+local CoreGui = game:GetService("CoreGui")
+
+-- Animation state tracking
+local animationStates = {
+    bgRotation = false,
+    titleGradient = false,
+    titleStroke = false,
+    particles = false,
+    barGradient = false
+}
+
+-- Safe tween creator with error handling
+local function safeTween(object, tweenInfo, properties, callback)
+    local success, tween = pcall(function()
+        if not object or not object.Parent then
+            return nil
+        end
+        local t = TweenService:Create(object, tweenInfo, properties)
+        if callback then
+            t.Completed:Connect(callback)
+        end
+        return t
+    end)
+    
+    if success and tween then
+        local playSuccess = pcall(function()
+            tween:Play()
+        end)
+        if not playSuccess then
+            tween = nil
+        end
+    end
+    
+    return success and tween or nil
+end
+
+-- Safe object validator
+local function isValid(obj)
+    return obj and obj.Parent and obj.Parent.Parent
+end
 
 -- Create loader GUI
 local function createLoader()
     local loaderGui = Instance.new("ScreenGui")
-    loaderGui.Name = "MisswareLoader"
+    loaderGui.Name = "MisswareLoader_" .. tick()
     loaderGui.ResetOnSpawn = false
     loaderGui.DisplayOrder = 2147483647
     loaderGui.IgnoreGuiInset = true
     loaderGui.ZIndexBehavior = Enum.ZIndexBehavior.Global
     
+    -- Try CoreGui first, fallback to PlayerGui
     local success = pcall(function()
-        loaderGui.Parent = game:GetService("CoreGui")
+        loaderGui.Parent = CoreGui
     end)
     
     if not success then
-        loaderGui.Parent = game:GetService("Players").LocalPlayer:WaitForChild("PlayerGui")
+        local player = Players.LocalPlayer
+        if player then
+            local playerGui = player:FindFirstChild("PlayerGui")
+            if playerGui then
+                loaderGui.Parent = playerGui
+            else
+                player.CharacterAdded:Wait()
+                loaderGui.Parent = player:WaitForChild("PlayerGui")
+            end
+        end
     end
     
     -- Background
@@ -217,129 +272,177 @@ local function createLoader()
     }
 end
 
--- Animation functions
+-- Cleanup function
+local function cleanupAnimations()
+    for key, _ in pairs(animationStates) do
+        animationStates[key] = false
+    end
+end
+
+-- Animation functions with state tracking
 local function animateLoader(loader)
     -- Background gradient rotation
-    spawn(function()
-        while loader.gui.Parent do
-            local success, err = pcall(function()
-                game:GetService("TweenService"):Create(loader.bgGradient, TweenInfo.new(4, Enum.EasingStyle.Linear), {Rotation = loader.bgGradient.Rotation + 360}):Play()
-            end)
-            if not success then
-                break
-            end
-            wait(4)
-        end
-    end)
-    
-    -- Title gradient animation
-    spawn(function()
-        while loader.gui.Parent do
-            local direction = 1
-            local offset = 0
-            while loader.gui.Parent do
-                offset = offset + direction * 0.005
-                if offset >= 1 then direction = -1; offset = 1 end
-                if offset <= 0 then direction = 1; offset = 0 end
-                if loader.titleGradient.Parent then
-                    loader.titleGradient.Offset = Vector2.new(offset, 0)
+    if not animationStates.bgRotation then
+        animationStates.bgRotation = true
+        spawn(function()
+            while animationStates.bgRotation and isValid(loader.gui) and isValid(loader.bgGradient) do
+                local currentRotation = loader.bgGradient.Rotation
+                local tween = safeTween(loader.bgGradient, TweenInfo.new(4, Enum.EasingStyle.Linear), {Rotation = currentRotation + 360})
+                if tween then
+                    tween.Completed:Wait()
                 else
                     break
                 end
-                game:GetService("RunService").RenderStepped:Wait()
+                wait(0.1) -- Small delay to prevent spam
             end
-        end
-    end)
+            animationStates.bgRotation = false
+        end)
+    end
+    
+    -- Title gradient animation with heartbeat
+    if not animationStates.titleGradient then
+        animationStates.titleGradient = true
+        spawn(function()
+            local direction = 1
+            local offset = 0
+            local connection
+            
+            connection = RunService.Heartbeat:Connect(function()
+                if not animationStates.titleGradient or not isValid(loader.titleGradient) then
+                    if connection then
+                        connection:Disconnect()
+                    end
+                    animationStates.titleGradient = false
+                    return
+                end
+                
+                offset = offset + direction * 0.005
+                if offset >= 1 then 
+                    direction = -1
+                    offset = 1 
+                elseif offset <= 0 then 
+                    direction = 1
+                    offset = 0 
+                end
+                
+                pcall(function()
+                    loader.titleGradient.Offset = Vector2.new(offset, 0)
+                end)
+            end)
+        end)
+    end
     
     -- Title stroke glow pulse
-    spawn(function()
-        while loader.gui.Parent do
-            local success, err = pcall(function()
-                game:GetService("TweenService"):Create(loader.titleStroke, TweenInfo.new(1.5, Enum.EasingStyle.Sine, Enum.EasingDirection.InOut), 
-                    {Color = Color3.fromRGB(255, 0, 255), Transparency = 0.7}):Play()
-            end)
-            if not success then
-                break
+    if not animationStates.titleStroke then
+        animationStates.titleStroke = true
+        spawn(function()
+            while animationStates.titleStroke and isValid(loader.gui) and isValid(loader.titleStroke) do
+                local tween1 = safeTween(loader.titleStroke, 
+                    TweenInfo.new(1.5, Enum.EasingStyle.Sine, Enum.EasingDirection.InOut), 
+                    {Color = Color3.fromRGB(255, 0, 255), Transparency = 0.7}
+                )
+                if tween1 then
+                    tween1.Completed:Wait()
+                else
+                    break
+                end
+                
+                if not animationStates.titleStroke or not isValid(loader.titleStroke) then break end
+                
+                local tween2 = safeTween(loader.titleStroke, 
+                    TweenInfo.new(1.5, Enum.EasingStyle.Sine, Enum.EasingDirection.InOut), 
+                    {Color = Color3.fromRGB(0, 255, 255), Transparency = 0.3}
+                )
+                if tween2 then
+                    tween2.Completed:Wait()
+                else
+                    break
+                end
+                
+                wait(0.1)
             end
-            wait(1.5)
-            pcall(function()
-                game:GetService("TweenService"):Create(loader.titleStroke, TweenInfo.new(1.5, Enum.EasingStyle.Sine, Enum.EasingDirection.InOut), 
-                    {Color = Color3.fromRGB(0, 255, 255), Transparency = 0.3}):Play()
-            end)
-            wait(1.5)
-        end
-    end)
+            animationStates.titleStroke = false
+        end)
+    end
     
     -- Particles floating animation
-    spawn(function()
-        while loader.gui.Parent do
-            for _, particle in pairs(loader.particles) do
-                if particle.Parent then
-                    local randomX = math.random(-50, 50) / 100
-                    local randomY = math.random(-50, 50) / 100
-                    local newPos = UDim2.new(
-                        math.clamp(particle.Position.X.Scale + randomX, 0, 1), 0,
-                        math.clamp(particle.Position.Y.Scale + randomY, 0, 1), 0
-                    )
-                    pcall(function()
-                        game:GetService("TweenService"):Create(particle, TweenInfo.new(2, Enum.EasingStyle.Sine), {Position = newPos}):Play()
-                    end)
-                    
-                    -- Color change
-                    pcall(function()
-                        game:GetService("TweenService"):Create(particle, TweenInfo.new(3, Enum.EasingStyle.Linear), 
-                            {BackgroundColor3 = Color3.fromHSV(math.random(180, 300) / 360, 1, 1)}):Play()
-                    end)
+    if not animationStates.particles then
+        animationStates.particles = true
+        spawn(function()
+            while animationStates.particles and isValid(loader.gui) do
+                for _, particle in pairs(loader.particles) do
+                    if not animationStates.particles then break end
+                    if isValid(particle) then
+                        local randomX = math.random(-50, 50) / 100
+                        local randomY = math.random(-50, 50) / 100
+                        local newPos = UDim2.new(
+                            math.clamp(particle.Position.X.Scale + randomX, 0, 1), 0,
+                            math.clamp(particle.Position.Y.Scale + randomY, 0, 1), 0
+                        )
+                        
+                        safeTween(particle, TweenInfo.new(2, Enum.EasingStyle.Sine), {Position = newPos})
+                        safeTween(particle, TweenInfo.new(3, Enum.EasingStyle.Linear), 
+                            {BackgroundColor3 = Color3.fromHSV(math.random(180, 300) / 360, 1, 1)})
+                    end
                 end
+                wait(2)
             end
-            wait(2)
-        end
-    end)
+            animationStates.particles = false
+        end)
+    end
     
     -- Loading bar gradient animation
-    spawn(function()
-        while loader.gui.Parent do
-            local success, err = pcall(function()
-                game:GetService("TweenService"):Create(loader.barGradient, TweenInfo.new(3, Enum.EasingStyle.Linear), {Rotation = 360}):Play()
-            end)
-            if not success then
-                break
+    if not animationStates.barGradient then
+        animationStates.barGradient = true
+        spawn(function()
+            while animationStates.barGradient and isValid(loader.gui) and isValid(loader.barGradient) do
+                local tween = safeTween(loader.barGradient, TweenInfo.new(3, Enum.EasingStyle.Linear), {Rotation = 360})
+                if tween then
+                    tween.Completed:Wait()
+                    if isValid(loader.barGradient) then
+                        loader.barGradient.Rotation = 0
+                    end
+                else
+                    break
+                end
+                wait(0.1)
             end
-            wait(3)
-            if loader.barGradient.Parent then
-                loader.barGradient.Rotation = 0
-            else
-                break
-            end
-        end
-    end)
+            animationStates.barGradient = false
+        end)
+    end
 end
 
 -- Show loader with entrance animation
 local function showLoaderAndWait()
     local loader = createLoader()
     
-    -- Entrance animations
-    pcall(function()
-        game:GetService("TweenService"):Create(loader.mainTitle, TweenInfo.new(1, Enum.EasingStyle.Back, Enum.EasingDirection.Out), 
-            {TextTransparency = 0}):Play()
-    end)
+    -- Ensure GUI is properly created
+    if not loader or not loader.gui or not loader.gui.Parent then
+        warn("Failed to create loader GUI")
+        loaderFinished = true
+        return
+    end
     
-    wait(0.3)
-    pcall(function()
-        game:GetService("TweenService"):Create(loader.subtitle, TweenInfo.new(0.8, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), 
-            {TextTransparency = 0}):Play()
-    end)
-    
-    wait(0.3)
-    pcall(function()
-        game:GetService("TweenService"):Create(loader.percentText, TweenInfo.new(0.6, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), 
-            {TextTransparency = 0}):Play()
-        game:GetService("TweenService"):Create(loader.statusText, TweenInfo.new(0.6, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), 
-            {TextTransparency = 0}):Play()
+    -- Entrance animations with error handling
+    spawn(function()
+        wait(0.1) -- Small delay to ensure everything is loaded
+        
+        safeTween(loader.mainTitle, TweenInfo.new(1, Enum.EasingStyle.Back, Enum.EasingDirection.Out), 
+            {TextTransparency = 0})
+        
+        wait(0.3)
+        safeTween(loader.subtitle, TweenInfo.new(0.8, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), 
+            {TextTransparency = 0})
+        
+        wait(0.3)
+        safeTween(loader.percentText, TweenInfo.new(0.6, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), 
+            {TextTransparency = 0})
+        safeTween(loader.statusText, TweenInfo.new(0.6, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), 
+            {TextTransparency = 0})
     end)
     
     -- Start animations
+    wait(0.5) -- Wait for entrance animations to start
     animateLoader(loader)
     
     -- Loading stages with status updates
@@ -357,24 +460,27 @@ local function showLoaderAndWait()
         local currentProgress = 0
         
         for _, stage in ipairs(stages) do
-            if not loader.gui.Parent then break end
+            if not isValid(loader.gui) then break end
             
-            -- Update status text
-            if loader.statusText.Parent then
-                loader.statusText.Text = stage.text
-            end
+            -- Update status text safely
+            pcall(function()
+                if isValid(loader.statusText) then
+                    loader.statusText.Text = stage.text
+                end
+            end)
             
             -- Animate to target progress
-            while currentProgress < stage.progress do
-                if not loader.gui.Parent then break end
-                
+            while currentProgress < stage.progress and isValid(loader.gui) do
                 currentProgress = currentProgress + 1
-                if loader.loadingBar.Parent then
-                    loader.loadingBar.Size = UDim2.new(currentProgress / 100, 0, 1, 0)
-                end
-                if loader.percentText.Parent then
-                    loader.percentText.Text = currentProgress .. "%"
-                end
+                
+                pcall(function()
+                    if isValid(loader.loadingBar) then
+                        loader.loadingBar.Size = UDim2.new(currentProgress / 100, 0, 1, 0)
+                    end
+                    if isValid(loader.percentText) then
+                        loader.percentText.Text = currentProgress .. "%"
+                    end
+                end)
                 
                 wait(math.random(30, 80) / 1000)
             end
@@ -386,39 +492,61 @@ local function showLoaderAndWait()
         -- Hold at 100% for a moment
         wait(0.8)
         
+        -- Cleanup animations before exit
+        cleanupAnimations()
+        wait(0.2) -- Let animations stop
+        
         -- Exit animation
-        pcall(function()
-            game:GetService("TweenService"):Create(loader.background, TweenInfo.new(0.8, Enum.EasingStyle.Quad, Enum.EasingDirection.In), 
-                {BackgroundTransparency = 1}):Play()
-        end)
+        local exitTweens = {}
+        
+        table.insert(exitTweens, safeTween(loader.background, TweenInfo.new(0.8, Enum.EasingStyle.Quad, Enum.EasingDirection.In), 
+            {BackgroundTransparency = 1}))
         
         for _, particle in pairs(loader.particles) do
-            pcall(function()
-                game:GetService("TweenService"):Create(particle, TweenInfo.new(0.8, Enum.EasingStyle.Quad, Enum.EasingDirection.In), 
-                    {BackgroundTransparency = 1}):Play()
-            end)
+            if isValid(particle) then
+                table.insert(exitTweens, safeTween(particle, TweenInfo.new(0.8, Enum.EasingStyle.Quad, Enum.EasingDirection.In), 
+                    {BackgroundTransparency = 1}))
+            end
         end
         
-        pcall(function()
-            game:GetService("TweenService"):Create(loader.mainTitle, TweenInfo.new(0.8, Enum.EasingStyle.Quad, Enum.EasingDirection.In), 
-                {TextTransparency = 1}):Play()
-            game:GetService("TweenService"):Create(loader.subtitle, TweenInfo.new(0.8, Enum.EasingStyle.Quad, Enum.EasingDirection.In), 
-                {TextTransparency = 1}):Play()
-            game:GetService("TweenService"):Create(loader.percentText, TweenInfo.new(0.8, Enum.EasingStyle.Quad, Enum.EasingDirection.In), 
-                {TextTransparency = 1}):Play()
-            game:GetService("TweenService"):Create(loader.statusText, TweenInfo.new(0.8, Enum.EasingStyle.Quad, Enum.EasingDirection.In), 
-                {TextTransparency = 1}):Play()
-        end)
+        table.insert(exitTweens, safeTween(loader.mainTitle, TweenInfo.new(0.8, Enum.EasingStyle.Quad, Enum.EasingDirection.In), 
+            {TextTransparency = 1}))
+        table.insert(exitTweens, safeTween(loader.subtitle, TweenInfo.new(0.8, Enum.EasingStyle.Quad, Enum.EasingDirection.In), 
+            {TextTransparency = 1}))
+        table.insert(exitTweens, safeTween(loader.percentText, TweenInfo.new(0.8, Enum.EasingStyle.Quad, Enum.EasingDirection.In), 
+            {TextTransparency = 1}))
+        table.insert(exitTweens, safeTween(loader.statusText, TweenInfo.new(0.8, Enum.EasingStyle.Quad, Enum.EasingDirection.In), 
+            {TextTransparency = 1}))
         
         wait(0.8)
-        if loader.gui and loader.gui.Parent then
-            loader.gui:Destroy()
-        end
+        
+        -- Destroy GUI safely
+        pcall(function()
+            if loader.gui and loader.gui.Parent then
+                loader.gui:Destroy()
+            end
+        end)
+        
         loaderFinished = true
     end)
     
-    -- Wait for loader to finish
-    repeat wait() until loaderFinished
+    -- Wait for loader to finish with timeout
+    local timeout = 0
+    repeat 
+        wait(0.1)
+        timeout = timeout + 0.1
+    until loaderFinished or timeout > 30 -- 30 second timeout
+    
+    if timeout > 30 then
+        warn("Loader timeout reached, forcing finish")
+        cleanupAnimations()
+        pcall(function()
+            if loader.gui and loader.gui.Parent then
+                loader.gui:Destroy()
+            end
+        end)
+        loaderFinished = true
+    end
     
     return loader
 end
@@ -441,15 +569,15 @@ local PLACEHOLDER_IMAGE = "rbxassetid://1847902752"  -- Replace with actual Robl
 
 -- Theme Database
 local themes = {
-    { name = "Ocean Theme", url = "https://raw.githubusercontent.com/amyrka238/amyr_soft/refs/heads/main/hvh/v3/Counter-Blox%20OceanTheme", desc = "Calm blue oceanic visuals" },
-    { name = "Light Theme", url = "https://raw.githubusercontent.com/amyrka238/amyr_soft/refs/heads/main/hvh/v3/Counter-Blox%20LightTheme", desc = "Bright and minimalistic design" },
-    { name = "Midnight Theme", url = "https://raw.githubusercontent.com/amyrka238/amyr_soft/refs/heads/main/hvh/v3/Counter-Blox%20Midnight", desc = "Dark night sky aesthetics" },
-    { name = "Dark Theme", url = "https://raw.githubusercontent.com/amyrka238/amyr_soft/refs/heads/main/hvh/v3/Counter-Blox%20DarkTheme", desc = "Classic dark mode" },
-    { name = "BloodTheme", url = "https://raw.githubusercontent.com/amyrka238/amyr_soft/refs/heads/main/hvh/v3/Counter-Blox%20BloodTheme", desc = "Intense red blood-inspired design" },
-    { name = "GrapeTheme", url = "https://raw.githubusercontent.com/amyrka238/amyr_soft/refs/heads/main/hvh/v3/Counter-Blox%20GrapeTheme", desc = "Rich purple grape-inspired visuals" },
-    { name = "Sentinel", url = "https://raw.githubusercontent.com/amyrka238/amyr_soft/refs/heads/main/hvh/v3/Counter-Blox%20Sentinel", desc = "Guardian-inspired theme" },
-    { name = "Serpent", url = "https://raw.githubusercontent.com/amyrka238/amyr_soft/refs/heads/main/hvh/v3/Counter-Blox%20Serpent", desc = "Sly serpent-themed design" },
-    { name = "Synapse", url = "https://raw.githubusercontent.com/amyrka238/amyr_soft/refs/heads/main/hvh/v3/Counter-Blox%20Synapse", desc = "Neural network-inspired visuals" }
+    { name = "Ocean Theme", url = "https://raw.githubusercontent.com/amyrka238/amyr_soft/refs/heads/main/hvh/v2/v3/Counter-Blox%2520OceanTheme", desc = "Calm blue oceanic visuals" },
+    { name = "Light Theme", url = "https://raw.githubusercontent.com/amyrka238/amyr_soft/refs/heads/main/hvh/v2/v3/Counter-Blox%2520LightTheme", desc = "Bright and minimalistic design" },
+    { name = "Midnight Theme", url = "https://raw.githubusercontent.com/amyrka238/amyr_soft/refs/heads/main/hvh/v2/v3/Counter-Blox%2520Midnight", desc = "Dark night sky aesthetics" },
+    { name = "Dark Theme", url = "https://raw.githubusercontent.com/amyrka238/amyr_soft/refs/heads/main/hvh/v2/v3/Counter-Blox%2520DarkTheme", desc = "Classic dark mode" },
+    { name = "BloodTheme", url = "https://raw.githubusercontent.com/amyrka238/amyr_soft/refs/heads/main/hvh/v2/v3/Counter-Blox%2520BloodTheme", desc = "Intense red blood-inspired design" },
+    { name = "GrapeTheme", url = "https://raw.githubusercontent.com/amyrka238/amyr_soft/refs/heads/main/hvh/v2/v3/Counter-Blox%2520GrapeTheme", desc = "Rich purple grape-inspired visuals" },
+    { name = "Sentinel", url = "https://raw.githubusercontent.com/amyrka238/amyr_soft/refs/heads/main/hvh/v2/v3/Counter-Blox%2520Sentinel", desc = "Guardian-inspired theme" },
+    { name = "Serpent", url = "https://raw.githubusercontent.com/amyrka238/amyr_soft/refs/heads/main/hvh/v2/v3/Counter-Blox%2520Serpent", desc = "Sly serpent-themed design" },
+    { name = "Synapse", url = "https://raw.githubusercontent.com/amyrka238/amyr_soft/refs/heads/main/hvh/v2/v3/Counter-Blox%2520Synapse", desc = "Neural network-inspired visuals" }
 }
 
 -- Performance Monitor
@@ -1023,7 +1151,7 @@ local function buildUI()
     subtitle.Size = UDim2.new(1, -140, 0, 20)
     subtitle.Position = UDim2.new(0, 20, 0, 55)
     subtitle.BackgroundTransparency = 1
-    subtitle.Text = "Free Edition v3.2 (Improved)"
+    subtitle.Text = "Free Edition v3.1 (Improved)"
     subtitle.TextColor3 = Color3.fromRGB(0, 255, 255)
     subtitle.TextSize = 14
     subtitle.Font = Enum.Font.GothamSemibold
@@ -1351,7 +1479,7 @@ local colors = {
     
     print("AMYR Cheat Loader Free: Initialized successfully!")
     
-    checkForUpdate("v3.2")
+    checkForUpdate("v3.1")
 end
 
 -- Build UI with error handling
