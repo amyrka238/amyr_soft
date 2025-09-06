@@ -15,8 +15,9 @@ local HttpService = game:GetService("HttpService")
 local SoundService = game:GetService("SoundService")
 local GuiService = game:GetService("GuiService")
 
--- Loader Animation System
+-- Loader Animation System (Updated)
 local LoaderAnimation = {}
+local loaderFinished = false
 
 -- Create loader GUI
 local function createLoader()
@@ -166,6 +167,21 @@ local function createLoader()
     percentText.ZIndex = 2147483647
     percentText.Parent = container
     
+    -- Loading status text
+    local statusText = Instance.new("TextLabel")
+    statusText.Name = "StatusText"
+    statusText.Size = UDim2.new(0, 300, 0, 25)
+    statusText.Position = UDim2.new(0.5, 0, 0.95, 0)
+    statusText.AnchorPoint = Vector2.new(0.5, 0.5)
+    statusText.BackgroundTransparency = 1
+    statusText.Text = "Инициализация..."
+    statusText.TextColor3 = Color3.fromRGB(150, 150, 150)
+    statusText.TextSize = 14
+    statusText.Font = Enum.Font.Gotham
+    statusText.TextTransparency = 1
+    statusText.ZIndex = 2147483647
+    statusText.Parent = container
+    
     -- Particles effect
     local particles = {}
     for i = 1, 20 do
@@ -196,6 +212,7 @@ local function createLoader()
         loadingBar = loadingBar,
         barGradient = barGradient,
         percentText = percentText,
+        statusText = statusText,
         particles = particles
     }
 end
@@ -270,7 +287,7 @@ local function animateLoader(loader)
 end
 
 -- Show loader with entrance animation
-local function showLoader()
+local function showLoaderAndWait()
     local loader = createLoader()
     
     -- Entrance animations
@@ -284,29 +301,49 @@ local function showLoader()
     wait(0.3)
     TweenService:Create(loader.percentText, TweenInfo.new(0.6, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), 
         {TextTransparency = 0}):Play()
+    TweenService:Create(loader.statusText, TweenInfo.new(0.6, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), 
+        {TextTransparency = 0}):Play()
     
     -- Start animations
     animateLoader(loader)
     
-    -- Loading bar fill animation
+    -- Loading stages with status updates
+    local stages = {
+        {progress = 15, text = "Подключение к серверам..."},
+        {progress = 30, text = "Загрузка ресурсов..."},
+        {progress = 50, text = "Инициализация UI..."},
+        {progress = 70, text = "Настройка темы..."},
+        {progress = 85, text = "Проверка обновлений..."},
+        {progress = 100, text = "Запуск лоадера..."}
+    }
+    
+    -- Loading bar fill animation with stages
     spawn(function()
-        for i = 0, 100 do
+        local currentProgress = 0
+        
+        for _, stage in ipairs(stages) do
             if not loader.gui.Parent then break end
             
-            loader.loadingBar.Size = UDim2.new(i / 100, 0, 1, 0)
-            loader.percentText.Text = i .. "%"
+            -- Update status text
+            loader.statusText.Text = stage.text
             
-            -- Add some random pauses to make it feel more realistic
-            local pauseChance = math.random(1, 100)
-            if pauseChance <= 15 then
-                wait(math.random(50, 200) / 1000)
+            -- Animate to target progress
+            while currentProgress < stage.progress do
+                if not loader.gui.Parent then break end
+                
+                currentProgress = currentProgress + 1
+                loader.loadingBar.Size = UDim2.new(currentProgress / 100, 0, 1, 0)
+                loader.percentText.Text = currentProgress .. "%"
+                
+                wait(math.random(30, 80) / 1000)
             end
             
-            wait(math.random(20, 60) / 1000)
+            -- Pause at stage completion
+            wait(math.random(200, 500) / 1000)
         end
         
         -- Hold at 100% for a moment
-        wait(0.5)
+        wait(0.8)
         
         -- Exit animation
         TweenService:Create(loader.background, TweenInfo.new(0.8, Enum.EasingStyle.Quad, Enum.EasingDirection.In), 
@@ -323,16 +360,22 @@ local function showLoader()
             {TextTransparency = 1}):Play()
         TweenService:Create(loader.percentText, TweenInfo.new(0.8, Enum.EasingStyle.Quad, Enum.EasingDirection.In), 
             {TextTransparency = 1}):Play()
+        TweenService:Create(loader.statusText, TweenInfo.new(0.8, Enum.EasingStyle.Quad, Enum.EasingDirection.In), 
+            {TextTransparency = 1}):Play()
         
         wait(0.8)
         loader.gui:Destroy()
+        loaderFinished = true
     end)
+    
+    -- Wait for loader to finish
+    repeat wait() until loaderFinished
     
     return loader
 end
 
--- Show the loader animation before the main UI
-showLoader()
+-- Show the loader animation and wait for completion
+showLoaderAndWait()
 
 -- Variables
 local LocalPlayer = Players.LocalPlayer
@@ -931,7 +974,7 @@ local function buildUI()
     subtitle.Size = UDim2.new(1, -140, 0, 20)
     subtitle.Position = UDim2.new(0, 20, 0, 55)
     subtitle.BackgroundTransparency = 1
-    subtitle.Text = "Free Edition v3.1 (Improved)"
+    subtitle.Text = "v3.3"
     subtitle.TextColor3 = Color3.fromRGB(0, 255, 255)
     subtitle.TextSize = 14
     subtitle.Font = Enum.Font.GothamSemibold
@@ -1259,7 +1302,7 @@ local colors = {
     
     print("AMYR Cheat Loader Free: Initialized successfully!")
     
-    checkForUpdate("v3.1")
+    checkForUpdate("v3.3")
 end
 
 -- Build UI with error handling
