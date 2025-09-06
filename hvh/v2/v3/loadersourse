@@ -15,6 +15,325 @@ local HttpService = game:GetService("HttpService")
 local SoundService = game:GetService("SoundService")
 local GuiService = game:GetService("GuiService")
 
+-- Loader Animation System
+local LoaderAnimation = {}
+
+-- Create loader GUI
+local function createLoader()
+    local loaderGui = Instance.new("ScreenGui")
+    loaderGui.Name = "MisswareLoader"
+    loaderGui.ResetOnSpawn = false
+    loaderGui.DisplayOrder = 2147483647
+    loaderGui.IgnoreGuiInset = true
+    loaderGui.ZIndexBehavior = Enum.ZIndexBehavior.Global
+    
+    local success = pcall(function()
+        loaderGui.Parent = CoreGui
+    end)
+    
+    if not success then
+        loaderGui.Parent = Players.LocalPlayer:WaitForChild("PlayerGui")
+    end
+    
+    -- Background
+    local background = Instance.new("Frame")
+    background.Name = "Background"
+    background.Size = UDim2.new(1, 0, 1, 0)
+    background.Position = UDim2.new(0, 0, 0, 0)
+    background.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+    background.BorderSizePixel = 0
+    background.ZIndex = 2147483647
+    background.Parent = loaderGui
+    
+    -- Animated gradient background
+    local bgGradient = Instance.new("UIGradient")
+    bgGradient.Color = ColorSequence.new{
+        ColorSequenceKeypoint.new(0, Color3.fromRGB(15, 15, 30)),
+        ColorSequenceKeypoint.new(0.5, Color3.fromRGB(30, 15, 50)),
+        ColorSequenceKeypoint.new(1, Color3.fromRGB(50, 15, 30))
+    }
+    bgGradient.Rotation = 45
+    bgGradient.Parent = background
+    
+    -- Main container
+    local container = Instance.new("Frame")
+    container.Name = "Container"
+    container.Size = UDim2.new(0, 600, 0, 400)
+    container.Position = UDim2.new(0.5, 0, 0.5, 0)
+    container.AnchorPoint = Vector2.new(0.5, 0.5)
+    container.BackgroundTransparency = 1
+    container.ZIndex = 2147483647
+    container.Parent = background
+    
+    -- Main title "Missware"
+    local mainTitle = Instance.new("TextLabel")
+    mainTitle.Name = "MainTitle"
+    mainTitle.Size = UDim2.new(0, 500, 0, 100)
+    mainTitle.Position = UDim2.new(0.5, 0, 0.4, 0)
+    mainTitle.AnchorPoint = Vector2.new(0.5, 0.5)
+    mainTitle.BackgroundTransparency = 1
+    mainTitle.Text = "Missware"
+    mainTitle.TextColor3 = Color3.fromRGB(255, 255, 255)
+    mainTitle.TextSize = 72
+    mainTitle.Font = Enum.Font.GothamBold
+    mainTitle.TextTransparency = 1
+    mainTitle.ZIndex = 2147483647
+    mainTitle.Parent = container
+    
+    -- Title gradient
+    local titleGradient = Instance.new("UIGradient")
+    titleGradient.Color = ColorSequence.new{
+        ColorSequenceKeypoint.new(0, Color3.fromRGB(0, 255, 255)),
+        ColorSequenceKeypoint.new(0.5, Color3.fromRGB(255, 0, 255)),
+        ColorSequenceKeypoint.new(1, Color3.fromRGB(255, 255, 0))
+    }
+    titleGradient.Rotation = 0
+    titleGradient.Parent = mainTitle
+    
+    -- Title glow effect
+    local titleStroke = Instance.new("UIStroke")
+    titleStroke.Color = Color3.fromRGB(0, 255, 255)
+    titleStroke.Thickness = 4
+    titleStroke.Transparency = 0.3
+    titleStroke.Parent = mainTitle
+    
+    -- Subtitle "t.me/amyr_softikk"
+    local subtitle = Instance.new("TextLabel")
+    subtitle.Name = "Subtitle"
+    subtitle.Size = UDim2.new(0, 400, 0, 40)
+    subtitle.Position = UDim2.new(0.5, 0, 0.6, 0)
+    subtitle.AnchorPoint = Vector2.new(0.5, 0.5)
+    subtitle.BackgroundTransparency = 1
+    subtitle.Text = "t.me/amyr_softikk"
+    subtitle.TextColor3 = Color3.fromRGB(200, 200, 200)
+    subtitle.TextSize = 24
+    subtitle.Font = Enum.Font.GothamSemibold
+    subtitle.TextTransparency = 1
+    subtitle.ZIndex = 2147483647
+    subtitle.Parent = container
+    
+    -- Loading bar container
+    local loadingContainer = Instance.new("Frame")
+    loadingContainer.Name = "LoadingContainer"
+    loadingContainer.Size = UDim2.new(0, 300, 0, 8)
+    loadingContainer.Position = UDim2.new(0.5, 0, 0.75, 0)
+    loadingContainer.AnchorPoint = Vector2.new(0.5, 0.5)
+    loadingContainer.BackgroundColor3 = Color3.fromRGB(40, 40, 60)
+    loadingContainer.BorderSizePixel = 0
+    loadingContainer.ZIndex = 2147483647
+    loadingContainer.Parent = container
+    
+    local loadingCorner = Instance.new("UICorner")
+    loadingCorner.CornerRadius = UDim.new(0, 4)
+    loadingCorner.Parent = loadingContainer
+    
+    -- Loading bar fill
+    local loadingBar = Instance.new("Frame")
+    loadingBar.Name = "LoadingBar"
+    loadingBar.Size = UDim2.new(0, 0, 1, 0)
+    loadingBar.Position = UDim2.new(0, 0, 0, 0)
+    loadingBar.BackgroundColor3 = Color3.fromRGB(0, 255, 255)
+    loadingBar.BorderSizePixel = 0
+    loadingBar.ZIndex = 2147483647
+    loadingBar.Parent = loadingContainer
+    
+    local barCorner = Instance.new("UICorner")
+    barCorner.CornerRadius = UDim.new(0, 4)
+    barCorner.Parent = loadingBar
+    
+    -- Loading bar gradient
+    local barGradient = Instance.new("UIGradient")
+    barGradient.Color = ColorSequence.new{
+        ColorSequenceKeypoint.new(0, Color3.fromRGB(0, 255, 255)),
+        ColorSequenceKeypoint.new(0.5, Color3.fromRGB(100, 200, 255)),
+        ColorSequenceKeypoint.new(1, Color3.fromRGB(255, 0, 255))
+    }
+    barGradient.Rotation = 0
+    barGradient.Parent = loadingBar
+    
+    -- Loading percentage text
+    local percentText = Instance.new("TextLabel")
+    percentText.Name = "PercentText"
+    percentText.Size = UDim2.new(0, 100, 0, 30)
+    percentText.Position = UDim2.new(0.5, 0, 0.85, 0)
+    percentText.AnchorPoint = Vector2.new(0.5, 0.5)
+    percentText.BackgroundTransparency = 1
+    percentText.Text = "0%"
+    percentText.TextColor3 = Color3.fromRGB(255, 255, 255)
+    percentText.TextSize = 18
+    percentText.Font = Enum.Font.Gotham
+    percentText.TextTransparency = 1
+    percentText.ZIndex = 2147483647
+    percentText.Parent = container
+    
+    -- Particles effect
+    local particles = {}
+    for i = 1, 20 do
+        local particle = Instance.new("Frame")
+        particle.Size = UDim2.new(0, math.random(2, 6), 0, math.random(2, 6))
+        particle.Position = UDim2.new(math.random(0, 100) / 100, 0, math.random(0, 100) / 100, 0)
+        particle.BackgroundColor3 = Color3.fromHSV(math.random(180, 300) / 360, 1, 1)
+        particle.BorderSizePixel = 0
+        particle.BackgroundTransparency = 0.3
+        particle.ZIndex = 2147483646
+        particle.Parent = background
+        
+        local particleCorner = Instance.new("UICorner")
+        particleCorner.CornerRadius = UDim.new(1, 0)
+        particleCorner.Parent = particle
+        
+        table.insert(particles, particle)
+    end
+    
+    return {
+        gui = loaderGui,
+        background = background,
+        bgGradient = bgGradient,
+        mainTitle = mainTitle,
+        titleGradient = titleGradient,
+        titleStroke = titleStroke,
+        subtitle = subtitle,
+        loadingBar = loadingBar,
+        barGradient = barGradient,
+        percentText = percentText,
+        particles = particles
+    }
+end
+
+-- Animation functions
+local function animateLoader(loader)
+    -- Background gradient rotation
+    spawn(function()
+        while loader.gui.Parent do
+            TweenService:Create(loader.bgGradient, TweenInfo.new(4, Enum.EasingStyle.Linear), {Rotation = loader.bgGradient.Rotation + 360}):Play()
+            wait(4)
+        end
+    end)
+    
+    -- Title gradient animation
+    spawn(function()
+        while loader.gui.Parent do
+            local direction = 1
+            local offset = 0
+            while loader.gui.Parent do
+                offset = offset + direction * 0.005
+                if offset >= 1 then direction = -1; offset = 1 end
+                if offset <= 0 then direction = 1; offset = 0 end
+                loader.titleGradient.Offset = Vector2.new(offset, 0)
+                RunService.RenderStepped:Wait()
+            end
+        end
+    end)
+    
+    -- Title stroke glow pulse
+    spawn(function()
+        while loader.gui.Parent do
+            TweenService:Create(loader.titleStroke, TweenInfo.new(1.5, Enum.EasingStyle.Sine, Enum.EasingDirection.InOut), 
+                {Color = Color3.fromRGB(255, 0, 255), Transparency = 0.7}):Play()
+            wait(1.5)
+            TweenService:Create(loader.titleStroke, TweenInfo.new(1.5, Enum.EasingStyle.Sine, Enum.EasingDirection.InOut), 
+                {Color = Color3.fromRGB(0, 255, 255), Transparency = 0.3}):Play()
+            wait(1.5)
+        end
+    end)
+    
+    -- Particles floating animation
+    spawn(function()
+        while loader.gui.Parent do
+            for _, particle in pairs(loader.particles) do
+                if particle.Parent then
+                    local randomX = math.random(-50, 50) / 100
+                    local randomY = math.random(-50, 50) / 100
+                    local newPos = UDim2.new(
+                        math.clamp(particle.Position.X.Scale + randomX, 0, 1), 0,
+                        math.clamp(particle.Position.Y.Scale + randomY, 0, 1), 0
+                    )
+                    TweenService:Create(particle, TweenInfo.new(2, Enum.EasingStyle.Sine), {Position = newPos}):Play()
+                    
+                    -- Color change
+                    TweenService:Create(particle, TweenInfo.new(3, Enum.EasingStyle.Linear), 
+                        {BackgroundColor3 = Color3.fromHSV(math.random(180, 300) / 360, 1, 1)}):Play()
+                end
+            end
+            wait(2)
+        end
+    end)
+    
+    -- Loading bar gradient animation
+    spawn(function()
+        while loader.gui.Parent do
+            TweenService:Create(loader.barGradient, TweenInfo.new(3, Enum.EasingStyle.Linear), {Rotation = 360}):Play()
+            wait(3)
+            loader.barGradient.Rotation = 0
+        end
+    end)
+end
+
+-- Show loader with entrance animation
+local function showLoader()
+    local loader = createLoader()
+    
+    -- Entrance animations
+    TweenService:Create(loader.mainTitle, TweenInfo.new(1, Enum.EasingStyle.Back, Enum.EasingDirection.Out), 
+        {TextTransparency = 0}):Play()
+    
+    wait(0.3)
+    TweenService:Create(loader.subtitle, TweenInfo.new(0.8, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), 
+        {TextTransparency = 0}):Play()
+    
+    wait(0.3)
+    TweenService:Create(loader.percentText, TweenInfo.new(0.6, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), 
+        {TextTransparency = 0}):Play()
+    
+    -- Start animations
+    animateLoader(loader)
+    
+    -- Loading bar fill animation
+    spawn(function()
+        for i = 0, 100 do
+            if not loader.gui.Parent then break end
+            
+            loader.loadingBar.Size = UDim2.new(i / 100, 0, 1, 0)
+            loader.percentText.Text = i .. "%"
+            
+            -- Add some random pauses to make it feel more realistic
+            local pauseChance = math.random(1, 100)
+            if pauseChance <= 15 then
+                wait(math.random(50, 200) / 1000)
+            end
+            
+            wait(math.random(20, 60) / 1000)
+        end
+        
+        -- Hold at 100% for a moment
+        wait(0.5)
+        
+        -- Exit animation
+        TweenService:Create(loader.background, TweenInfo.new(0.8, Enum.EasingStyle.Quad, Enum.EasingDirection.In), 
+            {BackgroundTransparency = 1}):Play()
+        
+        for _, particle in pairs(loader.particles) do
+            TweenService:Create(particle, TweenInfo.new(0.8, Enum.EasingStyle.Quad, Enum.EasingDirection.In), 
+                {BackgroundTransparency = 1}):Play()
+        end
+        
+        TweenService:Create(loader.mainTitle, TweenInfo.new(0.8, Enum.EasingStyle.Quad, Enum.EasingDirection.In), 
+            {TextTransparency = 1}):Play()
+        TweenService:Create(loader.subtitle, TweenInfo.new(0.8, Enum.EasingStyle.Quad, Enum.EasingDirection.In), 
+            {TextTransparency = 1}):Play()
+        TweenService:Create(loader.percentText, TweenInfo.new(0.8, Enum.EasingStyle.Quad, Enum.EasingDirection.In), 
+            {TextTransparency = 1}):Play()
+        
+        wait(0.8)
+        loader.gui:Destroy()
+    end)
+    
+    return loader
+end
+
+-- Show the loader animation before the main UI
+showLoader()
+
 -- Variables
 local LocalPlayer = Players.LocalPlayer
 if not LocalPlayer then
@@ -30,15 +349,15 @@ local PLACEHOLDER_IMAGE = "rbxassetid://1847902752"  -- Replace with actual Robl
 
 -- Theme Database
 local themes = {
-    { name = "Ocean Theme", url = "https://raw.githubusercontent.com/amyrka238/amyr_soft/refs/heads/main/hvh/v2/Counter-Blox%20OceanTheme", desc = "Calm blue oceanic visuals" },
-    { name = "Light Theme", url = "https://raw.githubusercontent.com/amyrka238/amyr_soft/refs/heads/main/hvh/v2/Counter-Blox%20LightTheme", desc = "Bright and minimalistic design" },
-    { name = "Midnight Theme", url = "https://raw.githubusercontent.com/amyrka238/amyr_soft/refs/heads/main/hvh/v2/Counter-Blox%20Midnight", desc = "Dark night sky aesthetics" },
-    { name = "Dark Theme", url = "https://raw.githubusercontent.com/amyrka238/amyr_soft/refs/heads/main/hvh/v2/Counter-Blox%20DarkTheme", desc = "Classic dark mode" },
-    { name = "BloodTheme", url = "https://raw.githubusercontent.com/amyrka238/amyr_soft/refs/heads/main/hvh/v2/Counter-Blox%20BloodTheme", desc = "Intense red blood-inspired design" },
-    { name = "GrapeTheme", url = "https://raw.githubusercontent.com/amyrka238/amyr_soft/refs/heads/main/hvh/v2/Counter-Blox%20GrapeTheme", desc = "Rich purple grape-inspired visuals" },
-    { name = "Sentinel", url = "https://raw.githubusercontent.com/amyrka238/amyr_soft/refs/heads/main/hvh/v2/Counter-Blox%20Sentinel", desc = "Guardian-inspired theme" },
-    { name = "Serpent", url = "https://raw.githubusercontent.com/amyrka238/amyr_soft/refs/heads/main/hvh/v2/Counter-Blox%20Serpent", desc = "Sly serpent-themed design" },
-    { name = "Synapse", url = "https://raw.githubusercontent.com/amyrka238/amyr_soft/refs/heads/main/hvh/v2/Counter-Blox%20Synapse", desc = "Neural network-inspired visuals" }
+    { name = "Ocean Theme", url = "https://raw.githubusercontent.com/amyrka238/amyr_soft/refs/heads/main/hvh/v2/v3/Ocean.lua", desc = "Calm blue oceanic visuals" },
+    { name = "Light Theme", url = "https://raw.githubusercontent.com/amyrka238/amyr_soft/refs/heads/main/hvh/v2/v3/LightTheme.lua", desc = "Bright and minimalistic design" },
+    { name = "Midnight Theme", url = "https://raw.githubusercontent.com/amyrka238/amyr_soft/refs/heads/main/hvh/v2/v3/Midnight.lua", desc = "Dark night sky aesthetics" },
+    { name = "Dark Theme", url = "https://raw.githubusercontent.com/amyrka238/amyr_soft/refs/heads/main/hvh/v2/v3/DarkTheme.lua", desc = "Classic dark mode" },
+    { name = "BloodTheme", url = "https://raw.githubusercontent.com/amyrka238/amyr_soft/refs/heads/main/hvh/v2/v3/BloodTheme.lua", desc = "Intense red blood-inspired design" },
+    { name = "GrapeTheme", url = "https://raw.githubusercontent.com/amyrka238/amyr_soft/refs/heads/main/hvh/v2/v3/GrapeTheme.lua", desc = "Rich purple grape-inspired visuals" },
+    { name = "Sentinel", url = "https://raw.githubusercontent.com/amyrka238/amyr_soft/refs/heads/main/hvh/v2/v3/Sentinel.lua", desc = "Guardian-inspired theme" },
+    { name = "Serpent", url = "https://raw.githubusercontent.com/amyrka238/amyr_soft/refs/heads/main/hvh/v2/v3/Serpent.lua", desc = "Sly serpent-themed design" },
+    { name = "Synapse", url = "https://raw.githubusercontent.com/amyrka238/amyr_soft/refs/heads/main/hvh/v2/v3/Synapse.lua", desc = "Neural network-inspired visuals" }
 }
 
 -- Performance Monitor
