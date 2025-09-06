@@ -1,6 +1,6 @@
 -- ╔══════════════════════════════════════════════════════════════╗
 -- ║                    AMYR_SOFTIKK THEME LOADER                 ║
--- ║                    Free Edition v3.1 (Improved)              ║
+-- ║                           v3.3                               ║
 -- ║                    t.me/amyr_softikk                         ║
 -- ╚══════════════════════════════════════════════════════════════╝
 
@@ -441,15 +441,15 @@ local PLACEHOLDER_IMAGE = "rbxassetid://1847902752"  -- Replace with actual Robl
 
 -- Theme Database
 local themes = {
-    { name = "Ocean Theme", url = "https://raw.githubusercontent.com/amyrka238/amyr_soft/refs/heads/main/hvh/v2/Counter-Blox%20OceanTheme", desc = "Calm blue oceanic visuals" },
-    { name = "Light Theme", url = "https://raw.githubusercontent.com/amyrka238/amyr_soft/refs/heads/main/hvh/v2/Counter-Blox%20LightTheme", desc = "Bright and minimalistic design" },
-    { name = "Midnight Theme", url = "https://raw.githubusercontent.com/amyrka238/amyr_soft/refs/heads/main/hvh/v2/Counter-Blox%20Midnight", desc = "Dark night sky aesthetics" },
-    { name = "Dark Theme", url = "https://raw.githubusercontent.com/amyrka238/amyr_soft/refs/heads/main/hvh/v2/Counter-Blox%20DarkTheme", desc = "Classic dark mode" },
-    { name = "BloodTheme", url = "https://raw.githubusercontent.com/amyrka238/amyr_soft/refs/heads/main/hvh/v2/Counter-Blox%20BloodTheme", desc = "Intense red blood-inspired design" },
-    { name = "GrapeTheme", url = "https://raw.githubusercontent.com/amyrka238/amyr_soft/refs/heads/main/hvh/v2/Counter-Blox%20GrapeTheme", desc = "Rich purple grape-inspired visuals" },
-    { name = "Sentinel", url = "https://raw.githubusercontent.com/amyrka238/amyr_soft/refs/heads/main/hvh/v2/Counter-Blox%20Sentinel", desc = "Guardian-inspired theme" },
-    { name = "Serpent", url = "https://raw.githubusercontent.com/amyrka238/amyr_soft/refs/heads/main/hvh/v2/Counter-Blox%20Serpent", desc = "Sly serpent-themed design" },
-    { name = "Synapse", url = "https://raw.githubusercontent.com/amyrka238/amyr_soft/refs/heads/main/hvh/v2/Counter-Blox%20Synapse", desc = "Neural network-inspired visuals" }
+    { name = "Ocean Theme", url = "https://raw.githubusercontent.com/amyrka238/amyr_soft/refs/heads/main/hvh/v2/v3/Ocean.lua", desc = "Calm blue oceanic visuals" },
+    { name = "Light Theme", url = "https://raw.githubusercontent.com/amyrka238/amyr_soft/refs/heads/main/hvh/v2/v3/LightTheme.lua", desc = "Bright and minimalistic design" },
+    { name = "Midnight Theme", url = "https://raw.githubusercontent.com/amyrka238/amyr_soft/refs/heads/main/hvh/v2/v3/Midnight.lua", desc = "Dark night sky aesthetics" },
+    { name = "Dark Theme", url = "https://raw.githubusercontent.com/amyrka238/amyr_soft/refs/heads/main/hvh/v2/v3/DarkTheme.lua", desc = "Classic dark mode" },
+    { name = "BloodTheme", url = "https://raw.githubusercontent.com/amyrka238/amyr_soft/refs/heads/main/hvh/v2/v3/BloodTheme.lua", desc = "Intense red blood-inspired design" },
+    { name = "GrapeTheme", url = "https://raw.githubusercontent.com/amyrka238/amyr_soft/refs/heads/main/hvh/v2/v3/GrapeTheme.lua", desc = "Rich purple grape-inspired visuals" },
+    { name = "Sentinel", url = "https://raw.githubusercontent.com/amyrka238/amyr_soft/refs/heads/main/hvh/v2/v3/Sentinel.lua", desc = "Guardian-inspired theme" },
+    { name = "Serpent", url = "https://raw.githubusercontent.com/amyrka238/amyr_soft/refs/heads/main/hvh/v2/v3/Serpent.lua", desc = "Sly serpent-themed design" },
+    { name = "Synapse", url = "https://raw.githubusercontent.com/amyrka238/amyr_soft/refs/heads/main/hvh/v2/v3/Synapse.lua", desc = "Neural network-inspired visuals" }
 }
 
 -- Performance Monitor
@@ -1023,7 +1023,7 @@ local function buildUI()
     subtitle.Size = UDim2.new(1, -140, 0, 20)
     subtitle.Position = UDim2.new(0, 20, 0, 55)
     subtitle.BackgroundTransparency = 1
-    subtitle.Text = "Free Edition v3.1 (Improved)"
+    subtitle.Text = "v3.1"
     subtitle.TextColor3 = Color3.fromRGB(0, 255, 255)
     subtitle.TextSize = 14
     subtitle.Font = Enum.Font.GothamSemibold
@@ -1351,7 +1351,7 @@ local colors = {
     
     print("AMYR Cheat Loader Free: Initialized successfully!")
     
-    checkForUpdate("v3.1")
+    checkForUpdate("v3.3")
 end
 
 -- Build UI with error handling
