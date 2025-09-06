@@ -1,1 +1,1406 @@
-local v0=game:GetService("Players");local v1=game:GetService("RunService");local v2=game:GetService("TweenService");local v3=game:GetService("UserInputService");local v4=game:GetService("CoreGui");local v5=game:GetService("Stats");local v6=game:GetService("HttpService");local v7=game:GetService("SoundService");local v8=game:GetService("GuiService");local v9={};local v10=false;local function v11() local v82=Instance.new("ScreenGui");v82.Name="MisswareLoader";v82.ResetOnSpawn=false;v82.DisplayOrder=2147483647;v82.IgnoreGuiInset=true;v82.ZIndexBehavior=Enum.ZIndexBehavior.Global;local v89=pcall(function() v82.Parent=game:GetService("CoreGui");end);if  not v89 then v82.Parent=game:GetService("Players").LocalPlayer:WaitForChild("PlayerGui");end local v90=Instance.new("Frame");v90.Name="Background";v90.Size=UDim2.new(1,0,1,0);v90.Position=UDim2.new(0,0,0,0);v90.BackgroundColor3=Color3.fromRGB(0,0,0);v90.BorderSizePixel=0;v90.ZIndex=2147483647;v90.Parent=v82;local v98=Instance.new("UIGradient");v98.Color=ColorSequence.new({ColorSequenceKeypoint.new(0,Color3.fromRGB(15,15,30)),ColorSequenceKeypoint.new(0.5,Color3.fromRGB(30,15,50)),ColorSequenceKeypoint.new(1,Color3.fromRGB(50,15,30))});v98.Rotation=45;v98.Parent=v90;local v102=Instance.new("Frame");v102.Name="Container";v102.Size=UDim2.new(0,600,0,400);v102.Position=UDim2.new(0.5,0,0.5,0);v102.AnchorPoint=Vector2.new(0.5,0.5);v102.BackgroundTransparency=1;v102.ZIndex=2147483647;v102.Parent=v90;local v110=Instance.new("TextLabel");v110.Name="MainTitle";v110.Size=UDim2.new(0,500,0,100);v110.Position=UDim2.new(0.5,0,0.4,0);v110.AnchorPoint=Vector2.new(0.5,0.5);v110.BackgroundTransparency=1;v110.Text="Missware";v110.TextColor3=Color3.fromRGB(255,255,255);v110.TextSize=72;v110.Font=Enum.Font.GothamBold;v110.TextTransparency=1;v110.ZIndex=2147483647;v110.Parent=v102;local v124=Instance.new("UIGradient");v124.Color=ColorSequence.new({ColorSequenceKeypoint.new(0,Color3.fromRGB(0,255,255)),ColorSequenceKeypoint.new(0.5,Color3.fromRGB(255,0,255)),ColorSequenceKeypoint.new(1,Color3.fromRGB(255,255,0))});v124.Rotation=0;v124.Parent=v110;local v128=Instance.new("UIStroke");v128.Color=Color3.fromRGB(0,255,255);v128.Thickness=4;v128.Transparency=0.3;v128.Parent=v110;local v133=Instance.new("TextLabel");v133.Name="Subtitle";v133.Size=UDim2.new(0,400,0,40);v133.Position=UDim2.new(0.5,0,0.6,0);v133.AnchorPoint=Vector2.new(0.5,0.5);v133.BackgroundTransparency=1;v133.Text="t.me/amyr_softikk";v133.TextColor3=Color3.fromRGB(200,200,200);v133.TextSize=24;v133.Font=Enum.Font.GothamSemibold;v133.TextTransparency=1;v133.ZIndex=2147483647;v133.Parent=v102;local v147=Instance.new("Frame");v147.Name="LoadingContainer";v147.Size=UDim2.new(0,300,0,8);v147.Position=UDim2.new(0.5,0,0.75,0);v147.AnchorPoint=Vector2.new(0.5,0.5);v147.BackgroundColor3=Color3.fromRGB(40,40,60);v147.BorderSizePixel=0;v147.ZIndex=2147483647;v147.Parent=v102;local v156=Instance.new("UICorner");v156.CornerRadius=UDim.new(0,4);v156.Parent=v147;local v159=Instance.new("Frame");v159.Name="LoadingBar";v159.Size=UDim2.new(0,0,1,0);v159.Position=UDim2.new(0,0,0,0);v159.BackgroundColor3=Color3.fromRGB(0,255,255);v159.BorderSizePixel=0;v159.ZIndex=2147483647;v159.Parent=v147;local v167=Instance.new("UICorner");v167.CornerRadius=UDim.new(0,4);v167.Parent=v159;local v170=Instance.new("UIGradient");v170.Color=ColorSequence.new({ColorSequenceKeypoint.new(0,Color3.fromRGB(0,255,255)),ColorSequenceKeypoint.new(0.5,Color3.fromRGB(100,200,255)),ColorSequenceKeypoint.new(1,Color3.fromRGB(255,0,255))});v170.Rotation=0;v170.Parent=v159;local v174=Instance.new("TextLabel");v174.Name="PercentText";v174.Size=UDim2.new(0,100,0,30);v174.Position=UDim2.new(0.5,0,0.85,0);v174.AnchorPoint=Vector2.new(0.5,0.5);v174.BackgroundTransparency=1;v174.Text="0%";v174.TextColor3=Color3.fromRGB(255,255,255);v174.TextSize=18;v174.Font=Enum.Font.Gotham;v174.TextTransparency=1;v174.ZIndex=2147483647;v174.Parent=v102;local v188=Instance.new("TextLabel");v188.Name="StatusText";v188.Size=UDim2.new(0,300,0,25);v188.Position=UDim2.new(0.5,0,0.95,0);v188.AnchorPoint=Vector2.new(0.5,0.5);v188.BackgroundTransparency=1;v188.Text="Инициализация...";v188.TextColor3=Color3.fromRGB(150,150,150);v188.TextSize=14;v188.Font=Enum.Font.Gotham;v188.TextTransparency=1;v188.ZIndex=2147483647;v188.Parent=v102;local v201={};for v547=1,20 do local v548=Instance.new("Frame");v548.Size=UDim2.new(0,math.random(2,6),0,math.random(2,6));v548.Position=UDim2.new(math.random(0,100)/100 ,0,math.random(0,100)/100 ,0);v548.BackgroundColor3=Color3.fromHSV(math.random(180,300)/360 ,1,1);v548.BorderSizePixel=0;v548.BackgroundTransparency=0.3;v548.ZIndex=2147483646;v548.Parent=v90;local v556=Instance.new("UICorner");v556.CornerRadius=UDim.new(1,0);v556.Parent=v548;table.insert(v201,v548);end return {gui=v82,background=v90,bgGradient=v98,mainTitle=v110,titleGradient=v124,titleStroke=v128,subtitle=v133,loadingBar=v159,barGradient=v170,percentText=v174,statusText=v188,particles=v201};end local function v12(v202) spawn(function() while v202.gui.Parent do local v591,v592=pcall(function() game:GetService("TweenService"):Create(v202.bgGradient,TweenInfo.new(4,Enum.EasingStyle.Linear),{Rotation=v202.bgGradient.Rotation + 360 }):Play();end);if  not v591 then break;end wait(4);end end);spawn(function() while v202.gui.Parent do local v593=1;local v594=0;while v202.gui.Parent do v594=v594 + (v593 * 0.005) ;if (v594>=1) then v593= -1;v594=1;end if (v594<=0) then v593=1;v594=0;end if v202.titleGradient.Parent then v202.titleGradient.Offset=Vector2.new(v594,0);else break;end game:GetService("RunService").RenderStepped:Wait();end end end);spawn(function() while v202.gui.Parent do local v595,v596=pcall(function() game:GetService("TweenService"):Create(v202.titleStroke,TweenInfo.new(1.5,Enum.EasingStyle.Sine,Enum.EasingDirection.InOut),{Color=Color3.fromRGB(255,0,255),Transparency=0.7}):Play();end);if  not v595 then break;end wait(1.5);pcall(function() game:GetService("TweenService"):Create(v202.titleStroke,TweenInfo.new(1.5,Enum.EasingStyle.Sine,Enum.EasingDirection.InOut),{Color=Color3.fromRGB(0,255,255),Transparency=0.3}):Play();end);wait(1.5);end end);spawn(function() while v202.gui.Parent do for v615,v616 in pairs(v202.particles) do if v616.Parent then local v694=math.random( -50,50)/100 ;local v695=math.random( -50,50)/100 ;local v696=UDim2.new(math.clamp(v616.Position.X.Scale + v694 ,0,1),0,math.clamp(v616.Position.Y.Scale + v695 ,0,1),0);pcall(function() game:GetService("TweenService"):Create(v616,TweenInfo.new(2,Enum.EasingStyle.Sine),{Position=v696}):Play();end);pcall(function() game:GetService("TweenService"):Create(v616,TweenInfo.new(3,Enum.EasingStyle.Linear),{BackgroundColor3=Color3.fromHSV(math.random(180,300)/360 ,1,1)}):Play();end);end end wait(2);end end);spawn(function() while v202.gui.Parent do local v597,v598=pcall(function() game:GetService("TweenService"):Create(v202.barGradient,TweenInfo.new(3,Enum.EasingStyle.Linear),{Rotation=360}):Play();end);if  not v597 then break;end wait(3);if v202.barGradient.Parent then v202.barGradient.Rotation=0;else break;end end end);end local function v13() local v203=v11();pcall(function() game:GetService("TweenService"):Create(v203.mainTitle,TweenInfo.new(1,Enum.EasingStyle.Back,Enum.EasingDirection.Out),{TextTransparency=0}):Play();end);wait(0.3);pcall(function() game:GetService("TweenService"):Create(v203.subtitle,TweenInfo.new(0.8,Enum.EasingStyle.Quad,Enum.EasingDirection.Out),{TextTransparency=0}):Play();end);wait(0.3);pcall(function() game:GetService("TweenService"):Create(v203.percentText,TweenInfo.new(0.6,Enum.EasingStyle.Quad,Enum.EasingDirection.Out),{TextTransparency=0}):Play();game:GetService("TweenService"):Create(v203.statusText,TweenInfo.new(0.6,Enum.EasingStyle.Quad,Enum.EasingDirection.Out),{TextTransparency=0}):Play();end);v12(v203);local v204={{progress=15,text="Подключение к серверам..."},{progress=30,text="Загрузка ресурсов..."},{progress=50,text="Инициализация UI..."},{progress=70,text="Настройка темы..."},{progress=85,text="Проверка обновлений..."},{progress=100,text="Запуск лоадера..."}};spawn(function() local v559=0;for v599,v600 in ipairs(v204) do if  not v203.gui.Parent then break;end if v203.statusText.Parent then v203.statusText.Text=v600.text;end while v559<v600.progress  do if  not v203.gui.Parent then break;end v559=v559 + 1 ;if v203.loadingBar.Parent then v203.loadingBar.Size=UDim2.new(v559/100 ,0,1,0);end if v203.percentText.Parent then v203.percentText.Text=v559   .. "%" ;end wait(math.random(30,80)/1000 );end wait(math.random(200,500)/1000 );end wait(0.8);pcall(function() game:GetService("TweenService"):Create(v203.background,TweenInfo.new(0.8,Enum.EasingStyle.Quad,Enum.EasingDirection.In),{BackgroundTransparency=1}):Play();end);for v601,v602 in pairs(v203.particles) do pcall(function() game:GetService("TweenService"):Create(v602,TweenInfo.new(0.8,Enum.EasingStyle.Quad,Enum.EasingDirection.In),{BackgroundTransparency=1}):Play();end);end pcall(function() game:GetService("TweenService"):Create(v203.mainTitle,TweenInfo.new(0.8,Enum.EasingStyle.Quad,Enum.EasingDirection.In),{TextTransparency=1}):Play();game:GetService("TweenService"):Create(v203.subtitle,TweenInfo.new(0.8,Enum.EasingStyle.Quad,Enum.EasingDirection.In),{TextTransparency=1}):Play();game:GetService("TweenService"):Create(v203.percentText,TweenInfo.new(0.8,Enum.EasingStyle.Quad,Enum.EasingDirection.In),{TextTransparency=1}):Play();game:GetService("TweenService"):Create(v203.statusText,TweenInfo.new(0.8,Enum.EasingStyle.Quad,Enum.EasingDirection.In),{TextTransparency=1}):Play();end);wait(0.8);if (v203.gui and v203.gui.Parent) then v203.gui:Destroy();end v10=true;end);repeat wait();until v10 return v203;end v13();local v14=v0.LocalPlayer;if  not v14 then warn("AMYR Cheat Loader: Must run on client!");return;end local v15="ᴀᴍʏʀ_sᴏꜰᴛɪᴋᴋ | ᴛ.ᴍᴇ/ᴀᴍʏʀ_sᴏꜰᴛɪᴋᴋ";local v16="https://cdn4.telesco.pe/file/JLc0o5FG5L6rHhZW_UJ8P02UfNvDVPWsdf9uCNGZXTJsJEp5CCM5FAloYkCA8Dm2HgL7F0dq2z7y7nwMEdHIQaTNXEuudGilhuO31NRrxjJnUMPdF_1DAHgzsI8eUzanQqUs21TzmuuOkpYWWFRi3YEfsmo7igfrUOKgBJO1RPgVmQV4Wx6D26yzC3xdC8ztIuO5dwir5fsgqlRb9mFTRp4tMGpXAR9jRjsQHd9Cc7FtrBuX1-R-y3RktOrR0JunBtZqRArmfWB6kM2Fr08J1Msn25pAmpUlyA3IISu7-Z-zHBLm7Vp1DkP5jaA8t2bs7wE6Q7-SHSxPaZeTOGJC3Q.jpg";local v17="https://raw.githubusercontent.com/amyrka238/amyr_soft/refs/heads/main/hvh/loader_version.txt";local v18="rbxassetid://1847902752";local v19={{name="Ocean Theme",url="https://raw.githubusercontent.com/amyrka238/amyr_soft/refs/heads/main/hvh/v2/v3/Ocean.lua",desc="Calm blue oceanic visuals"},{name="Light Theme",url="https://raw.githubusercontent.com/amyrka238/amyr_soft/refs/heads/main/hvh/v2/v3/LightTheme.lua",desc="Bright and minimalistic design"},{name="Midnight Theme",url="https://raw.githubusercontent.com/amyrka238/amyr_soft/refs/heads/main/hvh/v2/v3/Midnight.lua",desc="Dark night sky aesthetics"},{name="Dark Theme",url="https://raw.githubusercontent.com/amyrka238/amyr_soft/refs/heads/main/hvh/v2/v3/DarkTheme.lua",desc="Classic dark mode"},{name="BloodTheme",url="https://raw.githubusercontent.com/amyrka238/amyr_soft/refs/heads/main/hvh/v2/v3/BloodTheme.lua",desc="Intense red blood-inspired design"},{name="GrapeTheme",url="https://raw.githubusercontent.com/amyrka238/amyr_soft/refs/heads/main/hvh/v2/v3/GrapeTheme.lua",desc="Rich purple grape-inspired visuals"},{name="Sentinel",url="https://raw.githubusercontent.com/amyrka238/amyr_soft/refs/heads/main/hvh/v2/v3/Sentinel.lua",desc="Guardian-inspired theme"},{name="Serpent",url="https://raw.githubusercontent.com/amyrka238/amyr_soft/refs/heads/main/hvh/v2/v3/Serpent.lua",desc="Sly serpent-themed design"},{name="Synapse",url="https://raw.githubusercontent.com/amyrka238/amyr_soft/refs/heads/main/hvh/v2/v3/Synapse.lua",desc="Neural network-inspired visuals"}};local v20={fps=0,ping=0,memory=0};local function v21() local v205=Instance.new("ScreenGui");v205.Name="AMYR_CheatLoader_Free_"   .. tick() ;v205.ResetOnSpawn=false;v205.DisplayOrder=2147483647;v205.IgnoreGuiInset=true;v205.ZIndexBehavior=Enum.ZIndexBehavior.Global;local v212=pcall(function() v205.Parent=v4;end);if  not v212 then v205.Parent=v14:WaitForChild("PlayerGui");warn("AMYR Cheat Loader: CoreGui access denied, using PlayerGui fallback.");end return v205;end local v22={};v22.notifications={};v22.Show=function(v213,v214,v215,v216,v217,v218) v217=v217 or 4 ;v216=v216 or "info" ;local v219={success={Color3.fromRGB(76,175,80),"✓"},error={Color3.fromRGB(244,67,54),"✗"},warning={Color3.fromRGB(255,193,7),"⚠"},info={Color3.fromRGB(33,150,243),"ℹ"}};local v220,v221=unpack(v219[v216] or v219.info );local v222=v21();local v223=Instance.new("Frame");v223.Size=UDim2.new(0,350,0,80);v223.Position=UDim2.new(1,0,0,20 + ( #v213.notifications * 90) );v223.BackgroundColor3=Color3.fromRGB(25,25,35);v223.BorderSizePixel=0;v223.ZIndex=2147483647;v223.Parent=v222;table.insert(v213.notifications,v223);local v230=Instance.new("UICorner");v230.CornerRadius=UDim.new(0,12);v230.Parent=v223;local v233=Instance.new("UIStroke");v233.Color=v220;v233.Thickness=2;v233.Parent=v223;local v237=Instance.new("UIGradient");v237.Color=ColorSequence.new({ColorSequenceKeypoint.new(0,Color3.fromRGB(40,40,50)),ColorSequenceKeypoint.new(1,Color3.fromRGB(20,20,30))});v237.Rotation=45;v237.Parent=v223;local v241=Instance.new("TextLabel");v241.Size=UDim2.new(0,50,1,0);v241.Position=UDim2.new(0,0,0,0);v241.BackgroundTransparency=1;v241.Text=v221;v241.TextColor3=v220;v241.TextSize=24;v241.Font=Enum.Font.GothamBold;v241.ZIndex=2147483647;v241.Parent=v223;local v252=Instance.new("TextLabel");v252.Size=UDim2.new(1, -60,0,30);v252.Position=UDim2.new(0,50,0,10);v252.BackgroundTransparency=1;v252.Text=v214;v252.TextColor3=Color3.fromRGB(255,255,255);v252.TextSize=16;v252.Font=Enum.Font.GothamBold;v252.TextXAlignment=Enum.TextXAlignment.Left;v252.ZIndex=2147483647;v252.Parent=v223;local v264=Instance.new("TextLabel");v264.Size=UDim2.new(1, -60,0,25);v264.Position=UDim2.new(0,50,0,35);v264.BackgroundTransparency=1;v264.Text=v215;v264.TextColor3=Color3.fromRGB(200,200,200);v264.TextSize=12;v264.Font=Enum.Font.Gotham;v264.TextXAlignment=Enum.TextXAlignment.Left;v264.TextWrapped=true;v264.ZIndex=2147483647;v264.Parent=v223;v223.Position=UDim2.new(1,370,0,20 + (( #v213.notifications-1) * 90) );local v277=v2:Create(v223,TweenInfo.new(0.5,Enum.EasingStyle.Back,Enum.EasingDirection.Out),{Position=UDim2.new(1, -370,0,20 + (( #v213.notifications-1) * 90) )});v277:Play();local v278,v279=pcall(function() local v561=Instance.new("Sound");v561.SoundId="rbxassetid://"   .. (((v216=="success") and "9112804515") or "9112804647") ;v561.Volume=0.5;v561.Parent=v7;v561:Play();return v561;end);if  not v278 then warn("Failed to play notification sound: "   .. tostring(v279) );end if v218 then local v604,v605=pcall(setclipboard,v218);if v604 then v264.Text=v215   .. " (Скопировано в буфер обмена)" ;else warn("Clipboard copy failed: "   .. tostring(v605) );v22:Show("Ошибка буфера","Не удалось скопировать в буфер обмена.","error",3);end end spawn(function() wait(v217);local v565=v2:Create(v223,TweenInfo.new(0.3,Enum.EasingStyle.Quad,Enum.EasingDirection.In),{BackgroundTransparency=1});v565:Play();v565.Completed:Connect(function() local v606=v2:Create(v223,TweenInfo.new(0.3,Enum.EasingStyle.Quad,Enum.EasingDirection.In),{Position=UDim2.new(1,0,0,v223.Position.Y.Offset)});v606:Play();v606.Completed:Connect(function() v222:Destroy();if v279 then v279:Destroy();end for v649,v650 in ipairs(v213.notifications) do if (v650==v223) then table.remove(v213.notifications,v649);break;end end end);end);end);end;local v25={};v25.Create=function(v280,v281,v282,v283,v284) local v285=v2:Create(v281,v282,v283);v285:Play();if v284 then v285.Completed:Connect(v284);end return v285;end;v25.Bounce=function(v286,v287,v288,v289) v288=v288 or 1.1 ;v289=v289 or 0.15 ;local v290=v287.Size;v286:Create(v287,TweenInfo.new(v289/2 ,Enum.EasingStyle.Quad,Enum.EasingDirection.Out),{Size=v290 * v288 },function() v286:Create(v287,TweenInfo.new(v289/2 ,Enum.EasingStyle.Quad,Enum.EasingDirection.In),{Size=v290});end);end;v25.GlowPulse=function(v291,v292,v293,v294,v295) v295=v295 or 2 ;local v296=Instance.new("UIStroke");v296.Color=v293;v296.Thickness=3;v296.Transparency=0.3;v296.Parent=v292;spawn(function() while v296.Parent do v291:Create(v296,TweenInfo.new(v295/2 ,Enum.EasingStyle.Sine,Enum.EasingDirection.InOut),{Color=v294,Transparency=0.7}):Wait();v291:Create(v296,TweenInfo.new(v295/2 ,Enum.EasingStyle.Sine,Enum.EasingDirection.InOut),{Color=v293,Transparency=0.3}):Wait();end end);return v296;end;v25.ShakeEffect=function(v301,v302,v303,v304) v303=v303 or 5 ;v304=v304 or 0.5 ;local v305=v302.Position;spawn(function() local v566=v304 * 60 ;for v607=1,v566 do if  not v302.Parent then break;end v302.Position=v305 + UDim2.new(0,math.random( -v303,v303),0,math.random( -v303,v303)) ;v1.Heartbeat:Wait();end if v302.Parent then v302.Position=v305;end end);end;v25.ParticleEffect=function(v306,v307) local v308,v309=pcall(function() local v567=Instance.new("ParticleEmitter");v567.Texture="rbxassetid://243660364";v567.Lifetime=NumberRange.new(1,2);v567.Rate=20;v567.Speed=NumberRange.new(5,10);v567.Parent=v307;return v567;end);if  not v308 then warn("Particle effect failed: "   .. tostring(v309) );end return (v308 and v309) or nil ;end;spawn(function() while true do local v573=pcall(function() v20.fps=math.floor(1/v1.RenderStepped:Wait() );if (v5.Network.ServerStatsItem and v5.Network.ServerStatsItem["Data Ping"]) then v20.ping=math.floor(v5.Network.ServerStatsItem["Data Ping"]:GetValue());end v20.memory=math.floor(v5:GetTotalMemoryUsageMb());end);if  not v573 then warn("Performance stats update failed.");end wait(1);end end);local function v31(v310) local v311,v312=pcall(function() return game:HttpGet(v310);end);return v311,v312;end local function v32(v313) local v314,v315=v31(v17);if v314 then if (v315 and (v315~=v313)) then v22:Show("Обновление!","Доступна новая версия! Загрузи с GitHub.","warning",5);end else v22:Show("Ошибка сети","Не удалось проверить обновления.","error",3);end end local function v33(v316,v317,v318) v318:Destroy();local v319,v320=pcall(function() return loadstring(game:HttpGet(v316.url))();end);if  not v319 then warn("AMYR Cheat Loader: failed to load theme:",v320);v22:Show("Ошибка!","Не удалось загрузить тему: "   .. tostring(v320) ,"error",4,v316.url);end end local v34=v21();local v15="ᴀᴍʏʀ_sᴏꜰᴛɪᴋᴋ | ᴛ.ᴍᴇ/ᴀᴍʏʀ_sᴏꜰᴛɪᴋᴋ";local v35=UDim2.new(0,350,0,40);local v36=UDim2.new(1, -370,1, -60);local v37=2147483647;local v38=Instance.new("TextLabel");v38.Name="WatermarkOutline";v38.Size=v35;v38.Position=v36;v38.BackgroundTransparency=1;v38.Text=v15;v38.TextColor3=Color3.fromRGB(8,8,10);v38.TextSize=25;v38.Font=Enum.Font.GothamBold;v38.TextXAlignment=Enum.TextXAlignment.Right;v38.ZIndex=v37-1 ;v38.Parent=v34;local v52=Instance.new("UIStroke");v52.Thickness=5;v52.Color=Color3.fromRGB(0,0,0);v52.Transparency=0;v52.Parent=v38;local v57=Instance.new("TextLabel");v57.Name="WatermarkMain";v57.Size=v35;v57.Position=v36;v57.BackgroundTransparency=1;v57.Text=v15;v57.TextColor3=Color3.fromRGB(255,255,255);v57.TextSize=25;v57.Font=Enum.Font.GothamBold;v57.TextXAlignment=Enum.TextXAlignment.Right;v57.ZIndex=v37;v57.Parent=v34;local v69=Instance.new("UIStroke");v69.Thickness=2.6;v69.Color=Color3.fromRGB(0,200,255);v69.Transparency=0.05;v69.Parent=v57;local v74=Instance.new("UIGradient");v74.Color=ColorSequence.new({ColorSequenceKeypoint.new(0,Color3.fromRGB(0,255,200)),ColorSequenceKeypoint.new(0.3,Color3.fromRGB(0,200,255)),ColorSequenceKeypoint.new(0.55,Color3.fromRGB(120,120,255)),ColorSequenceKeypoint.new(0.75,Color3.fromRGB(200,80,255)),ColorSequenceKeypoint.new(1,Color3.fromRGB(160,40,220))});v74.Rotation=0;v74.Parent=v57;v25:GlowPulse(v57,Color3.fromRGB(0,200,255),Color3.fromRGB(200,80,255),3);task.spawn(function() local v321=1;local v322=0;while v57.Parent do v322=v322 + (v321 * 0.0025) ;if (v322>=1) then v321= -1;v322=1;end if (v322<=0) then v321=1;v322=0;end v74.Offset=Vector2.new(v322,0);v1.RenderStepped:Wait();end end);local v78=true;v3.InputBegan:Connect(function(v323) if (v323.KeyCode==Enum.KeyCode.Delete) then v78= not v78;v25:Create(v57,TweenInfo.new(0.28,Enum.EasingStyle.Quad,Enum.EasingDirection.InOut),{TextTransparency=(v78 and 0) or 1 });v25:Create(v38,TweenInfo.new(0.28,Enum.EasingStyle.Quad,Enum.EasingDirection.InOut),{TextTransparency=(v78 and 0) or 1 });v25:Create(v69,TweenInfo.new(0.28,Enum.EasingStyle.Quad,Enum.EasingDirection.InOut),{Transparency=(v78 and 0.05) or 1 });v25:Create(v52,TweenInfo.new(0.28,Enum.EasingStyle.Quad,Enum.EasingDirection.InOut),{Transparency=(v78 and 0) or 1 });end end);local function v79() local v324=v21();local v325=Instance.new("Frame");v325.Name="PerformanceHUD";v325.Size=UDim2.new(0,180,0,90);v325.Position=UDim2.new(0,20,0,20);v325.BackgroundColor3=Color3.fromRGB(0,0,0);v325.BackgroundTransparency=0.3;v325.BorderSizePixel=0;v325.Visible=false;v325.ZIndex=2147483647;v325.Parent=v324;local v335=Instance.new("UICorner");v335.CornerRadius=UDim.new(0,8);v335.Parent=v325;local v338=Instance.new("TextLabel");v338.Size=UDim2.new(1, -10,0,25);v338.Position=UDim2.new(0,5,0,5);v338.BackgroundTransparency=1;v338.Text="FPS: Calculating...";v338.TextColor3=Color3.fromRGB(0,255,0);v338.TextSize=12;v338.Font=Enum.Font.GothamBold;v338.TextXAlignment=Enum.TextXAlignment.Left;v338.ZIndex=2147483647;v338.Parent=v325;local v351=Instance.new("TextLabel");v351.Size=UDim2.new(1, -10,0,25);v351.Position=UDim2.new(0,5,0,30);v351.BackgroundTransparency=1;v351.Text="PING: Calculating...";v351.TextColor3=Color3.fromRGB(255,255,0);v351.TextSize=12;v351.Font=Enum.Font.GothamBold;v351.TextXAlignment=Enum.TextXAlignment.Left;v351.ZIndex=2147483647;v351.Parent=v325;local v362=Instance.new("TextLabel");v362.Size=UDim2.new(1, -10,0,25);v362.Position=UDim2.new(0,5,0,55);v362.BackgroundTransparency=1;v362.Text="RAM: Calculating...";v362.TextColor3=Color3.fromRGB(255,0,255);v362.TextSize=12;v362.Font=Enum.Font.GothamBold;v362.TextXAlignment=Enum.TextXAlignment.Left;v362.ZIndex=2147483647;v362.Parent=v325;spawn(function() while v325.Parent do pcall(function() v338.Text="FPS: "   .. v20.fps ;v351.Text="PING: "   .. (((v20.ping>0) and (v20.ping   .. "ms")) or "N/A") ;v362.Text="RAM: "   .. v20.memory   .. "MB" ;v338.TextColor3=((v20.fps>=240) and Color3.fromRGB(0,255,0)) or ((v20.fps>=30) and Color3.fromRGB(255,255,0)) or Color3.fromRGB(255,0,0) ;v351.TextColor3=((v20.ping<240) and Color3.fromRGB(0,255,0)) or ((v20.ping<100) and Color3.fromRGB(255,255,0)) or Color3.fromRGB(255,0,0) ;end);wait(1);end end);local v373=false;local v374,v375;v325.InputBegan:Connect(function(v575) if (v575.UserInputType==Enum.UserInputType.MouseButton1) then v373=true;v374=v575.Position;v375=v325.Position;end end);v3.InputChanged:Connect(function(v576) if (v373 and (v576.UserInputType==Enum.UserInputType.MouseMovement)) then local v625=v576.Position-v374 ;local v626=UDim2.new(v375.X.Scale,v375.X.Offset + v625.X ,v375.Y.Scale,v375.Y.Offset + v625.Y );local v627=v324.AbsoluteSize;local v628=v325.AbsoluteSize;local v629=math.clamp(v626.X.Offset,0,v627.X-v628.X );local v630=math.clamp(v626.Y.Offset,0,v627.Y-v628.Y );v325.Position=UDim2.new(0,v629,0,v630);end end);v3.InputEnded:Connect(function(v577) if (v577.UserInputType==Enum.UserInputType.MouseButton1) then v373=false;end end);local v376=Instance.new("Frame");v376.Name="Overlay";v376.Size=UDim2.new(1,0,1,0);v376.BackgroundColor3=Color3.fromRGB(0,0,0);v376.BackgroundTransparency=0.5;v376.BorderSizePixel=0;v376.ZIndex=2147483646;v376.Parent=v324;local v384=Instance.new("Frame");v384.Name="MainFrame";v384.Size=UDim2.new(0,500,0,600);v384.Position=UDim2.new(0.5,0,0.5,0);v384.AnchorPoint=Vector2.new(0.5,0.5);v384.BackgroundColor3=Color3.fromRGB(15,15,25);v384.BorderSizePixel=0;v384.ZIndex=2147483647;v384.Parent=v376;local v393=v324.AbsoluteSize;local v394=v384.AbsoluteSize;local v395=v394.X/2 ;local v396=v394.Y/2 ;local v397=math.clamp(v384.Position.X.Offset,v395,v393.X-v395 );local v398=math.clamp(v384.Position.Y.Offset,v396,v393.Y-v396 );v384.Position=UDim2.new(0.5,v397,0.5,v398);local v399=Instance.new("UICorner");v399.CornerRadius=UDim.new(0,20);v399.Parent=v384;local v402=Instance.new("UIGradient");v402.Color=ColorSequence.new({ColorSequenceKeypoint.new(0,Color3.fromRGB(25,25,40)),ColorSequenceKeypoint.new(0.5,Color3.fromRGB(15,15,30)),ColorSequenceKeypoint.new(1,Color3.fromRGB(20,20,35))});v402.Rotation=45;v402.Parent=v384;v25:GlowPulse(v384,Color3.fromRGB(0,255,255),Color3.fromRGB(255,0,255),4);local v406=Instance.new("Frame");v406.Size=UDim2.new(1,0,0,120);v406.BackgroundColor3=Color3.fromRGB(20,20,35);v406.BorderSizePixel=0;v406.ZIndex=2147483647;v406.Parent=v384;local v412=Instance.new("UICorner");v412.CornerRadius=UDim.new(0,20);v412.Parent=v406;local v415=Instance.new("TextLabel");v415.Size=UDim2.new(1, -140,0,40);v415.Position=UDim2.new(0,20,0,15);v415.BackgroundTransparency=1;v415.Text="AMYR Cheat LOADER";v415.TextColor3=Color3.fromRGB(255,255,255);v415.TextSize=28;v415.Font=Enum.Font.GothamBold;v415.TextXAlignment=Enum.TextXAlignment.Left;v415.ZIndex=2147483647;v415.Parent=v406;local v426=Instance.new("TextLabel");v426.Size=UDim2.new(1, -140,0,20);v426.Position=UDim2.new(0,20,0,55);v426.BackgroundTransparency=1;v426.Text="v3.1";v426.TextColor3=Color3.fromRGB(0,255,255);v426.TextSize=14;v426.Font=Enum.Font.GothamSemibold;v426.TextXAlignment=Enum.TextXAlignment.Left;v426.ZIndex=2147483647;v426.Parent=v406;local v438=Instance.new("TextLabel");v438.Size=UDim2.new(1, -140,0,15);v438.Position=UDim2.new(0,20,0,75);v438.BackgroundTransparency=1;v438.Text="Выберите тему для загрузки (улучшенное меню)";v438.TextColor3=Color3.fromRGB(150,150,150);v438.TextSize=12;v438.Font=Enum.Font.Gotham;v438.TextXAlignment=Enum.TextXAlignment.Left;v438.ZIndex=2147483647;v438.Parent=v406;local v450=Instance.new("Frame");v450.Size=UDim2.new(0,200,0,30);v450.Position=UDim2.new(0,20,0,90);v450.BackgroundTransparency=1;v450.Parent=v406;local v455=Instance.new("ImageLabel");v455.Size=UDim2.new(0,30,0,30);v455.Position=UDim2.new(0,0,0,0);v455.BackgroundTransparency=1;v455.Image=v18;v455.ZIndex=2147483647;v455.Parent=v450;local v462=Instance.new("TextButton");v462.Size=UDim2.new(0,170,0,30);v462.Position=UDim2.new(0,35,0,0);v462.BackgroundTransparency=1;v462.Text="t.me/amyr_softikk";v462.TextColor3=Color3.fromRGB(0,255,255);v462.TextSize=14;v462.Font=Enum.Font.GothamBold;v462.ZIndex=2147483647;v462.Parent=v450;v462.MouseButton1Click:Connect(function() v22:Show("Telegram","Ссылка скопирована в буфер обмена!","info",3,"https://t.me/amyr_softikk");end);local v472=Instance.new("TextButton");v472.Size=UDim2.new(0,100,0,30);v472.Position=UDim2.new(1, -220,0,15);v472.BackgroundColor3=Color3.fromRGB(50,50,70);v472.Text="FPS HUD";v472.TextColor3=Color3.fromRGB(255,255,255);v472.TextSize=12;v472.Font=Enum.Font.GothamBold;v472.ZIndex=2147483647;v472.Parent=v406;local v482=Instance.new("UICorner");v482.CornerRadius=UDim.new(0,8);v482.Parent=v472;v472.MouseButton1Click:Connect(function() v325.Visible= not v325.Visible;v25:Bounce(v472);end);local v485=Instance.new("TextButton");v485.Size=UDim2.new(0,100,0,30);v485.Position=UDim2.new(1, -120,0,15);v485.BackgroundColor3=Color3.fromRGB(50,50,70);v485.Text="Сброс позиции";v485.TextColor3=Color3.fromRGB(255,255,255);v485.TextSize=12;v485.Font=Enum.Font.GothamBold;v485.ZIndex=2147483647;v485.Parent=v406;local v495=Instance.new("UICorner");v495.CornerRadius=UDim.new(0,8);v495.Parent=v485;v485.MouseButton1Click:Connect(function() local v579=v324.AbsoluteSize;local v580=v384.AbsoluteSize;local v581=(v579.X/2) -(v580.X/2) ;local v582=(v579.Y/2) -(v580.Y/2) ;v384.Position=UDim2.new(0.5,v581,0.5,v582);print("Reset position to:",v384.Position);v25:Bounce(v485);end);local v498=Instance.new("TextButton");v498.Size=UDim2.new(0,40,0,40);v498.Position=UDim2.new(1, -60,0,60);v498.BackgroundColor3=Color3.fromRGB(255,100,100);v498.Text="—";v498.TextColor3=Color3.fromRGB(255,255,255);v498.TextSize=20;v498.Font=Enum.Font.GothamBold;v498.ZIndex=2147483647;v498.Parent=v406;local v508=Instance.new("UICorner");v508.CornerRadius=UDim.new(0,20);v508.Parent=v498;v498.MouseButton1Click:Connect(function() v25:Create(v384,TweenInfo.new(0.5,Enum.EasingStyle.Back,Enum.EasingDirection.In),{Size=UDim2.new(0,0,0,0)},function() v324:Destroy();end);end);local v511=Instance.new("ScrollingFrame");v511.Name="Content";v511.Size=UDim2.new(1, -40,1, -160);v511.Position=UDim2.new(0,20,0,140);v511.BackgroundTransparency=1;v511.BorderSizePixel=0;v511.ScrollBarThickness=10;v511.ScrollBarImageColor3=Color3.fromRGB(0,255,255);v511.ScrollingDirection=Enum.ScrollingDirection.Y;v511.ZIndex=2147483647;v511.CanvasSize=UDim2.new(0,0,0,( #v19 * 100) + 20 );v511.Parent=v384;local v524=Instance.new("TextBox");v524.Size=UDim2.new(1, -140,0,30);v524.Position=UDim2.new(0,20,0,95);v524.BackgroundColor3=Color3.fromRGB(30,30,45);v524.Text="Поиск тем...";v524.TextColor3=Color3.fromRGB(150,150,150);v524.TextSize=14;v524.Font=Enum.Font.Gotham;v524.ZIndex=2147483647;v524.Parent=v406;local v534=Instance.new("UICorner");v534.CornerRadius=UDim.new(0,8);v534.Parent=v524;local v537={Color3.fromRGB(64,128,200),Color3.fromRGB(220,220,220),Color3.fromRGB(60,80,140),Color3.fromRGB(40,40,40),Color3.fromRGB(139,0,0),Color3.fromRGB(40,40,40),Color3.fromRGB(106,90,205),Color3.fromRGB(220,220,220),Color3.fromRGB(60,80,140),Color3.fromRGB(64,128,200),Color3.fromRGB(128,128,128),Color3.fromRGB(34,139,34),Color3.fromRGB(75,0,130)};local function v538(v584) v584=v584:lower();local v585=0;for v611,v612 in ipairs(v511:GetChildren()) do if v612:IsA("TextButton") then v612:Destroy();end end for v613,v614 in ipairs(v19) do if (v614.name:lower():find(v584) or v614.desc:lower():find(v584) or (v584=="") or (v584=="поиск тем...")) then local v652=Instance.new("TextButton");v652.Size=UDim2.new(1, -20,0,80);v652.Position=UDim2.new(0,10,0,v585);v652.BackgroundColor3=v537[v613] or Color3.fromRGB(64,128,200) ;v652.Text=v614.name;v652.TextColor3=Color3.fromRGB(255,255,255);v652.TextSize=18;v652.Font=Enum.Font.GothamBold;v652.AutoButtonColor=false;v652.ZIndex=2147483647;v652.Parent=v511;local v665=Instance.new("UICorner");v665.CornerRadius=UDim.new(0,15);v665.Parent=v652;local v668=Instance.new("UIStroke");v668.Color=Color3.fromRGB(255,255,255);v668.Thickness=2;v668.Transparency=0.8;v668.Parent=v652;local v673=Instance.new("TextLabel");v673.Size=UDim2.new(1, -20,0,30);v673.Position=UDim2.new(0,10,0,40);v673.BackgroundTransparency=1;v673.Text=v614.desc;v673.TextColor3=Color3.fromRGB(200,200,200);v673.TextSize=12;v673.Font=Enum.Font.Gotham;v673.TextXAlignment=Enum.TextXAlignment.Left;v673.TextWrapped=true;v673.ZIndex=2147483647;v673.Parent=v652;v25:GlowPulse(v652,v537[v613] or Color3.fromRGB(64,128,200) ,Color3.fromRGB(255,255,255),3);v652.MouseEnter:Connect(function() v25:Create(v652,TweenInfo.new(0.2,Enum.EasingStyle.Quad,Enum.EasingDirection.Out),{Size=UDim2.new(1, -15,0,85),BackgroundColor3=(v537[v613] or Color3.fromRGB(64,128,200)):Lerp(Color3.fromRGB(255,255,255),0.2)});v25:ParticleEffect(v652);end);v652.MouseLeave:Connect(function() v25:Create(v652,TweenInfo.new(0.2,Enum.EasingStyle.Quad,Enum.EasingDirection.Out),{Size=UDim2.new(1, -20,0,80),BackgroundColor3=v537[v613] or Color3.fromRGB(64,128,200) });end);v652.MouseButton1Click:Connect(function() v33(v614,v652,v324);end);v652.Position=UDim2.new( -1,0,0,v585);v25:Create(v652,TweenInfo.new(0.5 + (v613 * 0.1) ,Enum.EasingStyle.Back,Enum.EasingDirection.Out),{Position=UDim2.new(0,10,0,v585)});v585=v585 + 100 ;end end v511.CanvasSize=UDim2.new(0,0,0,math.max(v585,v511.AbsoluteSize.Y));end v538("");v524.FocusLost:Connect(function() v538(v524.Text);end);v524.Focused:Connect(function() if (v524.Text=="Поиск тем...") then v524.Text="";end end);local v539=false;local v540,v541,v542=nil,nil,Vector2.new(0,0);v406.InputBegan:Connect(function(v587) if (v587.UserInputType==Enum.UserInputType.MouseButton1) then v539=true;v540=v587.Position;v541=v384.Position;end end);v3.InputChanged:Connect(function(v588) if (v539 and (v588.UserInputType==Enum.UserInputType.MouseMovement)) then local v635=v588.Position-v540 ;local v636=UDim2.new(v541.X.Scale,v541.X.Offset + v635.X ,v541.Y.Scale,v541.Y.Offset + v635.Y );local v637=v324.AbsoluteSize;local v638=v384.AbsoluteSize;local v639=v638.X/2 ;local v640=v638.Y/2 ;local v641=math.clamp(v636.X.Offset,v639,v637.X-v639 );local v642=math.clamp(v636.Y.Offset,v640,v637.Y-v640 );v384.Position=UDim2.new(0.5,v641,0.5,v642);v542=v635;end end);v3.InputEnded:Connect(function(v589) if (v589.UserInputType==Enum.UserInputType.MouseButton1) then v539=false;spawn(function() local v688=v542/10 ;while (math.abs(v688.X)>0.1) or (math.abs(v688.Y)>0.1)  do local v699=v384.Position + UDim2.new(0,v688.X,0,v688.Y) ;local v700=v324.AbsoluteSize;local v701=v384.AbsoluteSize;local v702=v701.X/2 ;local v703=v701.Y/2 ;local v704=math.clamp(v699.X.Offset,v702,v700.X-v702 );local v705=math.clamp(v699.Y.Offset,v703,v700.Y-v703 );v384.Position=UDim2.new(0.5,v704,0.5,v705);v688=v688 * 0.95 ;v1.Heartbeat:Wait();end end);end end);v384.Size=UDim2.new(0,0,0,0);v376.BackgroundTransparency=1;v25:Create(v376,TweenInfo.new(0.5,Enum.EasingStyle.Quad,Enum.EasingDirection.Out),{BackgroundTransparency=0.5});v25:Create(v384,TweenInfo.new(0.8,Enum.EasingStyle.Back,Enum.EasingDirection.Out),{Size=UDim2.new(0,500,0,600)});wait(1);v22:Show("Добро пожаловать!","Улучшенный AMYR Cheat Loader запущен! Delete - watermark, F1 - HUD, F2 - меню.","info",3);print("AMYR Cheat Loader Free: Initialized successfully!");v32("v3.3");end local v80,v81=pcall(v79);if  not v80 then warn("AMYR Cheat Loader: Failed to build UI:",v81);v22:Show("Ошибка!","Не удалось построить UI: "   .. tostring(v81) ,"error",5);end v3.InputBegan:Connect(function(v543,v544) if v544 then return;end if (v543.KeyCode==Enum.KeyCode.F1) then pcall(function() local v644=v4:FindFirstChildWhichIsA("ScreenGui") or v14.PlayerGui:FindFirstChildWhichIsA("ScreenGui") ;if v644 then local v707=v644:FindFirstChild("PerformanceHUD");if v707 then v707.Visible= not v707.Visible;end end end);elseif (v543.KeyCode==Enum.KeyCode.F2) then v79();end end);spawn(function() wait(3);v22:Show("Подсказка","F1 - FPS HUD, F2 - открыть меню, Delete - watermark","info",4);end);game.Players.PlayerRemoving:Connect(function(v545) if (v545==v14) then pcall(function() for v689,v690 in pairs(v4:GetChildren()) do if (v690:IsA("ScreenGui") and v690.Name:find("AMYR_CheatLoader_Free_")) then v690:Destroy();end end for v691,v692 in pairs(v14.PlayerGui:GetChildren()) do if (v692:IsA("ScreenGui") and v692.Name:find("AMYR_CheatLoader_Free_")) then v692:Destroy();end end v34:Destroy();end);end end);
+-- ╔══════════════════════════════════════════════════════════════╗
+-- ║                    AMYR_SOFTIKK THEME LOADER                 ║
+-- ║                           v3.3                               ║
+-- ║                    t.me/amyr_softikk                         ║
+-- ╚══════════════════════════════════════════════════════════════╝
+
+-- Services
+local Players = game:GetService("Players")
+local RunService = game:GetService("RunService")
+local TweenService = game:GetService("TweenService")
+local UserInputService = game:GetService("UserInputService")
+local CoreGui = game:GetService("CoreGui")
+local Stats = game:GetService("Stats")
+local HttpService = game:GetService("HttpService")
+local SoundService = game:GetService("SoundService")
+local GuiService = game:GetService("GuiService")
+
+-- Loader Animation System (Fixed)
+local LoaderAnimation = {}
+local loaderFinished = false
+
+-- Create loader GUI
+local function createLoader()
+    local loaderGui = Instance.new("ScreenGui")
+    loaderGui.Name = "MisswareLoader"
+    loaderGui.ResetOnSpawn = false
+    loaderGui.DisplayOrder = 2147483647
+    loaderGui.IgnoreGuiInset = true
+    loaderGui.ZIndexBehavior = Enum.ZIndexBehavior.Global
+    
+    local success = pcall(function()
+        loaderGui.Parent = game:GetService("CoreGui")
+    end)
+    
+    if not success then
+        loaderGui.Parent = game:GetService("Players").LocalPlayer:WaitForChild("PlayerGui")
+    end
+    
+    -- Background
+    local background = Instance.new("Frame")
+    background.Name = "Background"
+    background.Size = UDim2.new(1, 0, 1, 0)
+    background.Position = UDim2.new(0, 0, 0, 0)
+    background.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+    background.BorderSizePixel = 0
+    background.ZIndex = 2147483647
+    background.Parent = loaderGui
+    
+    -- Animated gradient background
+    local bgGradient = Instance.new("UIGradient")
+    bgGradient.Color = ColorSequence.new{
+        ColorSequenceKeypoint.new(0, Color3.fromRGB(15, 15, 30)),
+        ColorSequenceKeypoint.new(0.5, Color3.fromRGB(30, 15, 50)),
+        ColorSequenceKeypoint.new(1, Color3.fromRGB(50, 15, 30))
+    }
+    bgGradient.Rotation = 45
+    bgGradient.Parent = background
+    
+    -- Main container
+    local container = Instance.new("Frame")
+    container.Name = "Container"
+    container.Size = UDim2.new(0, 600, 0, 400)
+    container.Position = UDim2.new(0.5, 0, 0.5, 0)
+    container.AnchorPoint = Vector2.new(0.5, 0.5)
+    container.BackgroundTransparency = 1
+    container.ZIndex = 2147483647
+    container.Parent = background
+    
+    -- Main title "Missware"
+    local mainTitle = Instance.new("TextLabel")
+    mainTitle.Name = "MainTitle"
+    mainTitle.Size = UDim2.new(0, 500, 0, 100)
+    mainTitle.Position = UDim2.new(0.5, 0, 0.4, 0)
+    mainTitle.AnchorPoint = Vector2.new(0.5, 0.5)
+    mainTitle.BackgroundTransparency = 1
+    mainTitle.Text = "Missware"
+    mainTitle.TextColor3 = Color3.fromRGB(255, 255, 255)
+    mainTitle.TextSize = 72
+    mainTitle.Font = Enum.Font.GothamBold
+    mainTitle.TextTransparency = 1
+    mainTitle.ZIndex = 2147483647
+    mainTitle.Parent = container
+    
+    -- Title gradient
+    local titleGradient = Instance.new("UIGradient")
+    titleGradient.Color = ColorSequence.new{
+        ColorSequenceKeypoint.new(0, Color3.fromRGB(0, 255, 255)),
+        ColorSequenceKeypoint.new(0.5, Color3.fromRGB(255, 0, 255)),
+        ColorSequenceKeypoint.new(1, Color3.fromRGB(255, 255, 0))
+    }
+    titleGradient.Rotation = 0
+    titleGradient.Parent = mainTitle
+    
+    -- Title glow effect
+    local titleStroke = Instance.new("UIStroke")
+    titleStroke.Color = Color3.fromRGB(0, 255, 255)
+    titleStroke.Thickness = 4
+    titleStroke.Transparency = 0.3
+    titleStroke.Parent = mainTitle
+    
+    -- Subtitle "t.me/amyr_softikk"
+    local subtitle = Instance.new("TextLabel")
+    subtitle.Name = "Subtitle"
+    subtitle.Size = UDim2.new(0, 400, 0, 40)
+    subtitle.Position = UDim2.new(0.5, 0, 0.6, 0)
+    subtitle.AnchorPoint = Vector2.new(0.5, 0.5)
+    subtitle.BackgroundTransparency = 1
+    subtitle.Text = "t.me/amyr_softikk"
+    subtitle.TextColor3 = Color3.fromRGB(200, 200, 200)
+    subtitle.TextSize = 24
+    subtitle.Font = Enum.Font.GothamSemibold
+    subtitle.TextTransparency = 1
+    subtitle.ZIndex = 2147483647
+    subtitle.Parent = container
+    
+    -- Loading bar container
+    local loadingContainer = Instance.new("Frame")
+    loadingContainer.Name = "LoadingContainer"
+    loadingContainer.Size = UDim2.new(0, 300, 0, 8)
+    loadingContainer.Position = UDim2.new(0.5, 0, 0.75, 0)
+    loadingContainer.AnchorPoint = Vector2.new(0.5, 0.5)
+    loadingContainer.BackgroundColor3 = Color3.fromRGB(40, 40, 60)
+    loadingContainer.BorderSizePixel = 0
+    loadingContainer.ZIndex = 2147483647
+    loadingContainer.Parent = container
+    
+    local loadingCorner = Instance.new("UICorner")
+    loadingCorner.CornerRadius = UDim.new(0, 4)
+    loadingCorner.Parent = loadingContainer
+    
+    -- Loading bar fill
+    local loadingBar = Instance.new("Frame")
+    loadingBar.Name = "LoadingBar"
+    loadingBar.Size = UDim2.new(0, 0, 1, 0)
+    loadingBar.Position = UDim2.new(0, 0, 0, 0)
+    loadingBar.BackgroundColor3 = Color3.fromRGB(0, 255, 255)
+    loadingBar.BorderSizePixel = 0
+    loadingBar.ZIndex = 2147483647
+    loadingBar.Parent = loadingContainer
+    
+    local barCorner = Instance.new("UICorner")
+    barCorner.CornerRadius = UDim.new(0, 4)
+    barCorner.Parent = loadingBar
+    
+    -- Loading bar gradient
+    local barGradient = Instance.new("UIGradient")
+    barGradient.Color = ColorSequence.new{
+        ColorSequenceKeypoint.new(0, Color3.fromRGB(0, 255, 255)),
+        ColorSequenceKeypoint.new(0.5, Color3.fromRGB(100, 200, 255)),
+        ColorSequenceKeypoint.new(1, Color3.fromRGB(255, 0, 255))
+    }
+    barGradient.Rotation = 0
+    barGradient.Parent = loadingBar
+    
+    -- Loading percentage text
+    local percentText = Instance.new("TextLabel")
+    percentText.Name = "PercentText"
+    percentText.Size = UDim2.new(0, 100, 0, 30)
+    percentText.Position = UDim2.new(0.5, 0, 0.85, 0)
+    percentText.AnchorPoint = Vector2.new(0.5, 0.5)
+    percentText.BackgroundTransparency = 1
+    percentText.Text = "0%"
+    percentText.TextColor3 = Color3.fromRGB(255, 255, 255)
+    percentText.TextSize = 18
+    percentText.Font = Enum.Font.Gotham
+    percentText.TextTransparency = 1
+    percentText.ZIndex = 2147483647
+    percentText.Parent = container
+    
+    -- Loading status text
+    local statusText = Instance.new("TextLabel")
+    statusText.Name = "StatusText"
+    statusText.Size = UDim2.new(0, 300, 0, 25)
+    statusText.Position = UDim2.new(0.5, 0, 0.95, 0)
+    statusText.AnchorPoint = Vector2.new(0.5, 0.5)
+    statusText.BackgroundTransparency = 1
+    statusText.Text = "Инициализация..."
+    statusText.TextColor3 = Color3.fromRGB(150, 150, 150)
+    statusText.TextSize = 14
+    statusText.Font = Enum.Font.Gotham
+    statusText.TextTransparency = 1
+    statusText.ZIndex = 2147483647
+    statusText.Parent = container
+    
+    -- Particles effect
+    local particles = {}
+    for i = 1, 20 do
+        local particle = Instance.new("Frame")
+        particle.Size = UDim2.new(0, math.random(2, 6), 0, math.random(2, 6))
+        particle.Position = UDim2.new(math.random(0, 100) / 100, 0, math.random(0, 100) / 100, 0)
+        particle.BackgroundColor3 = Color3.fromHSV(math.random(180, 300) / 360, 1, 1)
+        particle.BorderSizePixel = 0
+        particle.BackgroundTransparency = 0.3
+        particle.ZIndex = 2147483646
+        particle.Parent = background
+        
+        local particleCorner = Instance.new("UICorner")
+        particleCorner.CornerRadius = UDim.new(1, 0)
+        particleCorner.Parent = particle
+        
+        table.insert(particles, particle)
+    end
+    
+    return {
+        gui = loaderGui,
+        background = background,
+        bgGradient = bgGradient,
+        mainTitle = mainTitle,
+        titleGradient = titleGradient,
+        titleStroke = titleStroke,
+        subtitle = subtitle,
+        loadingBar = loadingBar,
+        barGradient = barGradient,
+        percentText = percentText,
+        statusText = statusText,
+        particles = particles
+    }
+end
+
+-- Animation functions
+local function animateLoader(loader)
+    -- Background gradient rotation
+    spawn(function()
+        while loader.gui.Parent do
+            local success, err = pcall(function()
+                game:GetService("TweenService"):Create(loader.bgGradient, TweenInfo.new(4, Enum.EasingStyle.Linear), {Rotation = loader.bgGradient.Rotation + 360}):Play()
+            end)
+            if not success then
+                break
+            end
+            wait(4)
+        end
+    end)
+    
+    -- Title gradient animation
+    spawn(function()
+        while loader.gui.Parent do
+            local direction = 1
+            local offset = 0
+            while loader.gui.Parent do
+                offset = offset + direction * 0.005
+                if offset >= 1 then direction = -1; offset = 1 end
+                if offset <= 0 then direction = 1; offset = 0 end
+                if loader.titleGradient.Parent then
+                    loader.titleGradient.Offset = Vector2.new(offset, 0)
+                else
+                    break
+                end
+                game:GetService("RunService").RenderStepped:Wait()
+            end
+        end
+    end)
+    
+    -- Title stroke glow pulse
+    spawn(function()
+        while loader.gui.Parent do
+            local success, err = pcall(function()
+                game:GetService("TweenService"):Create(loader.titleStroke, TweenInfo.new(1.5, Enum.EasingStyle.Sine, Enum.EasingDirection.InOut), 
+                    {Color = Color3.fromRGB(255, 0, 255), Transparency = 0.7}):Play()
+            end)
+            if not success then
+                break
+            end
+            wait(1.5)
+            pcall(function()
+                game:GetService("TweenService"):Create(loader.titleStroke, TweenInfo.new(1.5, Enum.EasingStyle.Sine, Enum.EasingDirection.InOut), 
+                    {Color = Color3.fromRGB(0, 255, 255), Transparency = 0.3}):Play()
+            end)
+            wait(1.5)
+        end
+    end)
+    
+    -- Particles floating animation
+    spawn(function()
+        while loader.gui.Parent do
+            for _, particle in pairs(loader.particles) do
+                if particle.Parent then
+                    local randomX = math.random(-50, 50) / 100
+                    local randomY = math.random(-50, 50) / 100
+                    local newPos = UDim2.new(
+                        math.clamp(particle.Position.X.Scale + randomX, 0, 1), 0,
+                        math.clamp(particle.Position.Y.Scale + randomY, 0, 1), 0
+                    )
+                    pcall(function()
+                        game:GetService("TweenService"):Create(particle, TweenInfo.new(2, Enum.EasingStyle.Sine), {Position = newPos}):Play()
+                    end)
+                    
+                    -- Color change
+                    pcall(function()
+                        game:GetService("TweenService"):Create(particle, TweenInfo.new(3, Enum.EasingStyle.Linear), 
+                            {BackgroundColor3 = Color3.fromHSV(math.random(180, 300) / 360, 1, 1)}):Play()
+                    end)
+                end
+            end
+            wait(2)
+        end
+    end)
+    
+    -- Loading bar gradient animation
+    spawn(function()
+        while loader.gui.Parent do
+            local success, err = pcall(function()
+                game:GetService("TweenService"):Create(loader.barGradient, TweenInfo.new(3, Enum.EasingStyle.Linear), {Rotation = 360}):Play()
+            end)
+            if not success then
+                break
+            end
+            wait(3)
+            if loader.barGradient.Parent then
+                loader.barGradient.Rotation = 0
+            else
+                break
+            end
+        end
+    end)
+end
+
+-- Show loader with entrance animation
+local function showLoaderAndWait()
+    local loader = createLoader()
+    
+    -- Entrance animations
+    pcall(function()
+        game:GetService("TweenService"):Create(loader.mainTitle, TweenInfo.new(1, Enum.EasingStyle.Back, Enum.EasingDirection.Out), 
+            {TextTransparency = 0}):Play()
+    end)
+    
+    wait(0.3)
+    pcall(function()
+        game:GetService("TweenService"):Create(loader.subtitle, TweenInfo.new(0.8, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), 
+            {TextTransparency = 0}):Play()
+    end)
+    
+    wait(0.3)
+    pcall(function()
+        game:GetService("TweenService"):Create(loader.percentText, TweenInfo.new(0.6, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), 
+            {TextTransparency = 0}):Play()
+        game:GetService("TweenService"):Create(loader.statusText, TweenInfo.new(0.6, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), 
+            {TextTransparency = 0}):Play()
+    end)
+    
+    -- Start animations
+    animateLoader(loader)
+    
+    -- Loading stages with status updates
+    local stages = {
+        {progress = 15, text = "Подключение к серверам..."},
+        {progress = 30, text = "Загрузка ресурсов..."},
+        {progress = 50, text = "Инициализация UI..."},
+        {progress = 70, text = "Настройка темы..."},
+        {progress = 85, text = "Проверка обновлений..."},
+        {progress = 100, text = "Запуск лоадера..."}
+    }
+    
+    -- Loading bar fill animation with stages
+    spawn(function()
+        local currentProgress = 0
+        
+        for _, stage in ipairs(stages) do
+            if not loader.gui.Parent then break end
+            
+            -- Update status text
+            if loader.statusText.Parent then
+                loader.statusText.Text = stage.text
+            end
+            
+            -- Animate to target progress
+            while currentProgress < stage.progress do
+                if not loader.gui.Parent then break end
+                
+                currentProgress = currentProgress + 1
+                if loader.loadingBar.Parent then
+                    loader.loadingBar.Size = UDim2.new(currentProgress / 100, 0, 1, 0)
+                end
+                if loader.percentText.Parent then
+                    loader.percentText.Text = currentProgress .. "%"
+                end
+                
+                wait(math.random(30, 80) / 1000)
+            end
+            
+            -- Pause at stage completion
+            wait(math.random(200, 500) / 1000)
+        end
+        
+        -- Hold at 100% for a moment
+        wait(0.8)
+        
+        -- Exit animation
+        pcall(function()
+            game:GetService("TweenService"):Create(loader.background, TweenInfo.new(0.8, Enum.EasingStyle.Quad, Enum.EasingDirection.In), 
+                {BackgroundTransparency = 1}):Play()
+        end)
+        
+        for _, particle in pairs(loader.particles) do
+            pcall(function()
+                game:GetService("TweenService"):Create(particle, TweenInfo.new(0.8, Enum.EasingStyle.Quad, Enum.EasingDirection.In), 
+                    {BackgroundTransparency = 1}):Play()
+            end)
+        end
+        
+        pcall(function()
+            game:GetService("TweenService"):Create(loader.mainTitle, TweenInfo.new(0.8, Enum.EasingStyle.Quad, Enum.EasingDirection.In), 
+                {TextTransparency = 1}):Play()
+            game:GetService("TweenService"):Create(loader.subtitle, TweenInfo.new(0.8, Enum.EasingStyle.Quad, Enum.EasingDirection.In), 
+                {TextTransparency = 1}):Play()
+            game:GetService("TweenService"):Create(loader.percentText, TweenInfo.new(0.8, Enum.EasingStyle.Quad, Enum.EasingDirection.In), 
+                {TextTransparency = 1}):Play()
+            game:GetService("TweenService"):Create(loader.statusText, TweenInfo.new(0.8, Enum.EasingStyle.Quad, Enum.EasingDirection.In), 
+                {TextTransparency = 1}):Play()
+        end)
+        
+        wait(0.8)
+        if loader.gui and loader.gui.Parent then
+            loader.gui:Destroy()
+        end
+        loaderFinished = true
+    end)
+    
+    -- Wait for loader to finish
+    repeat wait() until loaderFinished
+    
+    return loader
+end
+
+-- Show the loader animation and wait for completion
+showLoaderAndWait()
+
+-- Variables
+local LocalPlayer = Players.LocalPlayer
+if not LocalPlayer then
+    warn("AMYR Cheat Loader: Must run on client!")
+    return
+end
+
+-- Configuration
+local WATERMARK_TEXT = "ᴀᴍʏʀ_sᴏꜰᴛɪᴋᴋ | ᴛ.ᴍᴇ/ᴀᴍʏʀ_sᴏꜰᴛɪᴋᴋ"
+local PHOTO_URL = "https://cdn4.telesco.pe/file/JLc0o5FG5L6rHhZW_UJ8P02UfNvDVPWsdf9uCNGZXTJsJEp5CCM5FAloYkCA8Dm2HgL7F0dq2z7y7nwMEdHIQaTNXEuudGilhuO31NRrxjJnUMPdF_1DAHgzsI8eUzanQqUs21TzmuuOkpYWWFRi3YEfsmo7igfrUOKgBJO1RPgVmQV4Wx6D26yzC3xdC8ztIuO5dwir5fsgqlRb9mFTRp4tMGpXAR9jRjsQHd9Cc7FtrBuX1-R-y3RktOrR0JunBtZqRArmfWB6kM2Fr08J1Msn25pAmpUlyA3IISu7-Z-zHBLm7Vp1DkP5jaA8t2bs7wE6Q7-SHSxPaZeTOGJC3Q.jpg"  -- External; won't load directly. Use placeholder.
+local GITHUB_REPO = "https://raw.githubusercontent.com/amyrka238/amyr_soft/refs/heads/main/hvh/loader_version.txt"
+local PLACEHOLDER_IMAGE = "rbxassetid://1847902752"  -- Replace with actual Roblox asset ID if uploaded
+
+-- Theme Database
+local themes = {
+    { name = "Ocean Theme", url = "https://raw.githubusercontent.com/amyrka238/amyr_soft/refs/heads/main/hvh/v2/v3/Ocean.lua", desc = "Calm blue oceanic visuals" },
+    { name = "Light Theme", url = "https://raw.githubusercontent.com/amyrka238/amyr_soft/refs/heads/main/hvh/v2/v3/LightTheme.lua", desc = "Bright and minimalistic design" },
+    { name = "Midnight Theme", url = "https://raw.githubusercontent.com/amyrka238/amyr_soft/refs/heads/main/hvh/v2/v3/Midnight.lua", desc = "Dark night sky aesthetics" },
+    { name = "Dark Theme", url = "https://raw.githubusercontent.com/amyrka238/amyr_soft/refs/heads/main/hvh/v2/v3/DarkTheme.lua", desc = "Classic dark mode" },
+    { name = "BloodTheme", url = "https://raw.githubusercontent.com/amyrka238/amyr_soft/refs/heads/main/hvh/v2/v3/BloodTheme.lua", desc = "Intense red blood-inspired design" },
+    { name = "GrapeTheme", url = "https://raw.githubusercontent.com/amyrka238/amyr_soft/refs/heads/main/hvh/v2/v3/GrapeTheme.lua", desc = "Rich purple grape-inspired visuals" },
+    { name = "Sentinel", url = "https://raw.githubusercontent.com/amyrka238/amyr_soft/refs/heads/main/hvh/v2/v3/Sentinel.lua", desc = "Guardian-inspired theme" },
+    { name = "Serpent", url = "https://raw.githubusercontent.com/amyrka238/amyr_soft/refs/heads/main/hvh/v2/v3/Serpent.lua", desc = "Sly serpent-themed design" },
+    { name = "Synapse", url = "https://raw.githubusercontent.com/amyrka238/amyr_soft/refs/heads/main/hvh/v2/v3/Synapse.lua", desc = "Neural network-inspired visuals" }
+}
+
+-- Performance Monitor
+local performanceStats = {
+    fps = 0,
+    ping = 0,
+    memory = 0
+}
+
+-- Create GUI with maximum overlay priority
+local function createScreenGui()
+    local screenGui = Instance.new("ScreenGui")
+    screenGui.Name = "AMYR_CheatLoader_Free_" .. tick()
+    screenGui.ResetOnSpawn = false
+    screenGui.DisplayOrder = 2147483647
+    screenGui.IgnoreGuiInset = true
+    screenGui.ZIndexBehavior = Enum.ZIndexBehavior.Global
+    
+    local success = pcall(function()
+        screenGui.Parent = CoreGui
+    end)
+    
+    if not success then
+        screenGui.Parent = LocalPlayer:WaitForChild("PlayerGui")
+        warn("AMYR Cheat Loader: CoreGui access denied, using PlayerGui fallback.")
+    end
+    
+    return screenGui
+end
+
+-- Notification System (Improved: Added clipboard copy support, better error handling)
+local NotificationSystem = {}
+NotificationSystem.notifications = {}
+
+function NotificationSystem:Show(title, message, type, duration, clipboardText)
+    duration = duration or 4
+    type = type or "info"
+    
+    local colors = {
+        success = {Color3.fromRGB(76, 175, 80), "✓"},
+        error = {Color3.fromRGB(244, 67, 54), "✗"},
+        warning = {Color3.fromRGB(255, 193, 7), "⚠"},
+        info = {Color3.fromRGB(33, 150, 243), "ℹ"}
+    }
+    
+    local color, icon = unpack(colors[type] or colors.info)
+    
+    local notifGui = createScreenGui()
+    
+    local notification = Instance.new("Frame")
+    notification.Size = UDim2.new(0, 350, 0, 80)
+    notification.Position = UDim2.new(1, 0, 0, 20 + #self.notifications * 90)
+    notification.BackgroundColor3 = Color3.fromRGB(25, 25, 35)
+    notification.BorderSizePixel = 0
+    notification.ZIndex = 2147483647
+    notification.Parent = notifGui
+    
+    table.insert(self.notifications, notification)
+    
+    local corner = Instance.new("UICorner")
+    corner.CornerRadius = UDim.new(0, 12)
+    corner.Parent = notification
+    
+    local stroke = Instance.new("UIStroke")
+    stroke.Color = color
+    stroke.Thickness = 2
+    stroke.Parent = notification
+    
+    local gradient = Instance.new("UIGradient")
+    gradient.Color = ColorSequence.new{
+        ColorSequenceKeypoint.new(0, Color3.fromRGB(40, 40, 50)),
+        ColorSequenceKeypoint.new(1, Color3.fromRGB(20, 20, 30))
+    }
+    gradient.Rotation = 45
+    gradient.Parent = notification
+    
+    local iconLabel = Instance.new("TextLabel")
+    iconLabel.Size = UDim2.new(0, 50, 1, 0)
+    iconLabel.Position = UDim2.new(0, 0, 0, 0)
+    iconLabel.BackgroundTransparency = 1
+    iconLabel.Text = icon
+    iconLabel.TextColor3 = color
+    iconLabel.TextSize = 24
+    iconLabel.Font = Enum.Font.GothamBold
+    iconLabel.ZIndex = 2147483647
+    iconLabel.Parent = notification
+    
+    local titleLabel = Instance.new("TextLabel")
+    titleLabel.Size = UDim2.new(1, -60, 0, 30)
+    titleLabel.Position = UDim2.new(0, 50, 0, 10)
+    titleLabel.BackgroundTransparency = 1
+    titleLabel.Text = title
+    titleLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
+    titleLabel.TextSize = 16
+    titleLabel.Font = Enum.Font.GothamBold
+    titleLabel.TextXAlignment = Enum.TextXAlignment.Left
+    titleLabel.ZIndex = 2147483647
+    titleLabel.Parent = notification
+    
+    local messageLabel = Instance.new("TextLabel")
+    messageLabel.Size = UDim2.new(1, -60, 0, 25)
+    messageLabel.Position = UDim2.new(0, 50, 0, 35)
+    messageLabel.BackgroundTransparency = 1
+    messageLabel.Text = message
+    messageLabel.TextColor3 = Color3.fromRGB(200, 200, 200)
+    messageLabel.TextSize = 12
+    messageLabel.Font = Enum.Font.Gotham
+    messageLabel.TextXAlignment = Enum.TextXAlignment.Left
+    messageLabel.TextWrapped = true
+    messageLabel.ZIndex = 2147483647
+    messageLabel.Parent = notification
+    
+    -- Entrance animation
+    notification.Position = UDim2.new(1, 370, 0, 20 + (#self.notifications - 1) * 90)
+    local entranceTween = TweenService:Create(notification,
+        TweenInfo.new(0.5, Enum.EasingStyle.Back, Enum.EasingDirection.Out),
+        {Position = UDim2.new(1, -370, 0, 20 + (#self.notifications - 1) * 90)}
+    )
+    entranceTween:Play()
+    
+    -- Play sound (with error handling)
+    local successSound, sound = pcall(function()
+        local s = Instance.new("Sound")
+        s.SoundId = "rbxassetid://".. (type == "success" and "9112804515" or "9112804647")
+        s.Volume = 0.5
+        s.Parent = SoundService
+        s:Play()
+        return s
+    end)
+    if not successSound then
+        warn("Failed to play notification sound: " .. tostring(sound))
+    end
+    
+    -- Clipboard copy if provided
+    if clipboardText then
+        local successClip, clipErr = pcall(setclipboard, clipboardText)
+        if successClip then
+            messageLabel.Text = message .. " (Скопировано в буфер обмена)"
+        else
+            warn("Clipboard copy failed: " .. tostring(clipErr))
+            NotificationSystem:Show("Ошибка буфера", "Не удалось скопировать в буфер обмена.", "error", 3)
+        end
+    end
+    
+    -- Auto-remove
+    spawn(function()
+        wait(duration)
+        local fadeTween = TweenService:Create(notification,
+            TweenInfo.new(0.3, Enum.EasingStyle.Quad, Enum.EasingDirection.In),
+            {BackgroundTransparency = 1}
+        )
+        fadeTween:Play()
+        fadeTween.Completed:Connect(function()
+            local exitTween = TweenService:Create(notification,
+                TweenInfo.new(0.3, Enum.EasingStyle.Quad, Enum.EasingDirection.In),
+                {Position = UDim2.new(1, 0, 0, notification.Position.Y.Offset)}
+            )
+            exitTween:Play()
+            exitTween.Completed:Connect(function()
+                notifGui:Destroy()
+                if sound then sound:Destroy() end
+                for i, v in ipairs(self.notifications) do
+                    if v == notification then
+                        table.remove(self.notifications, i)
+                        break
+                    end
+                end
+            end)
+        end)
+    end)
+end
+
+-- Animation Engine (Improved: Added more effects, optimized)
+local AnimationEngine = {}
+
+function AnimationEngine:Create(obj, info, properties, callback)
+    local tween = TweenService:Create(obj, info, properties)
+    tween:Play()
+    if callback then
+        tween.Completed:Connect(callback)
+    end
+    return tween
+end
+
+function AnimationEngine:Bounce(obj, scale, duration)
+    scale = scale or 1.1
+    duration = duration or 0.15
+    
+    local original = obj.Size
+    self:Create(obj, 
+        TweenInfo.new(duration/2, Enum.EasingStyle.Quad, Enum.EasingDirection.Out),
+        {Size = original * scale},
+        function()
+            self:Create(obj,
+                TweenInfo.new(duration/2, Enum.EasingStyle.Quad, Enum.EasingDirection.In),
+                {Size = original}
+            )
+        end
+    )
+end
+
+function AnimationEngine:GlowPulse(obj, color1, color2, duration)
+    duration = duration or 2
+    local glow = Instance.new("UIStroke")
+    glow.Color = color1
+    glow.Thickness = 3
+    glow.Transparency = 0.3
+    glow.Parent = obj
+    
+    spawn(function()
+        while glow.Parent do
+            self:Create(glow,
+                TweenInfo.new(duration/2, Enum.EasingStyle.Sine, Enum.EasingDirection.InOut),
+                {Color = color2, Transparency = 0.7}
+            ):Wait()
+            self:Create(glow,
+                TweenInfo.new(duration/2, Enum.EasingStyle.Sine, Enum.EasingDirection.InOut),
+                {Color = color1, Transparency = 0.3}
+            ):Wait()
+        end
+    end)
+    
+    return glow
+end
+
+function AnimationEngine:ShakeEffect(obj, intensity, duration)
+    intensity = intensity or 5
+    duration = duration or 0.5
+    
+    local originalPos = obj.Position
+    spawn(function()
+        local steps = duration * 60
+        for i = 1, steps do
+            if not obj.Parent then break end
+            obj.Position = originalPos + UDim2.new(0, math.random(-intensity, intensity), 0, math.random(-intensity, intensity))
+            RunService.Heartbeat:Wait()
+        end
+        if obj.Parent then
+            obj.Position = originalPos
+        end
+    end)
+end
+
+function AnimationEngine:ParticleEffect(obj)
+    local success, emitter = pcall(function()
+        local particleEmitter = Instance.new("ParticleEmitter")
+        particleEmitter.Texture = "rbxassetid://243660364"
+        particleEmitter.Lifetime = NumberRange.new(1, 2)
+        particleEmitter.Rate = 20
+        particleEmitter.Speed = NumberRange.new(5, 10)
+        particleEmitter.Parent = obj
+        return particleEmitter
+    end)
+    if not success then
+        warn("Particle effect failed: " .. tostring(emitter))
+    end
+    return success and emitter or nil
+end
+
+-- Performance monitoring (Improved: More robust error handling)
+spawn(function()
+    while true do
+        local success = pcall(function()
+            performanceStats.fps = math.floor(1 / RunService.RenderStepped:Wait())
+            if Stats.Network.ServerStatsItem and Stats.Network.ServerStatsItem["Data Ping"] then
+                performanceStats.ping = math.floor(Stats.Network.ServerStatsItem["Data Ping"]:GetValue())
+            end
+            performanceStats.memory = math.floor(Stats:GetTotalMemoryUsageMb())
+        end)
+        if not success then
+            warn("Performance stats update failed.")
+        end
+        wait(1)
+    end
+end)
+
+-- Safe HTTP Get (Unchanged, but used everywhere)
+local function safeHttpGet(url)
+    local success, result = pcall(function()
+        return game:HttpGet(url)
+    end)
+    return success, result
+end
+
+-- Auto-update checker (Improved: Handle network errors)
+local function checkForUpdate(currentVersion)
+    local success, versionText = safeHttpGet(GITHUB_REPO)
+    if success then
+        if versionText and versionText ~= currentVersion then
+            NotificationSystem:Show("Обновление!", "Доступна новая версия! Загрузи с GitHub.", "warning", 5)
+        end
+    else
+        NotificationSystem:Show("Ошибка сети", "Не удалось проверить обновления.", "error", 3)
+    end
+end
+
+-- Theme loading (Matched to robust: Destroy GUI, pcall loadstring(HttpGet()))
+local function loadTheme(theme, button, screenGui)
+    screenGui:Destroy()
+    local ok, res = pcall(function()
+        return loadstring(game:HttpGet(theme.url))()
+    end)
+    if not ok then
+        warn("AMYR Cheat Loader: failed to load theme:", res)
+        NotificationSystem:Show("Ошибка!", "Не удалось загрузить тему: " .. tostring(res), "error", 4, theme.url)
+    end
+end
+
+-- Watermark: outline + animated gradient (чётко + переливание)
+local watermarkGui = createScreenGui()
+
+-- Общие параметры
+local WATERMARK_TEXT = "ᴀᴍʏʀ_sᴏꜰᴛɪᴋᴋ | ᴛ.ᴍᴇ/ᴀᴍʏʀ_sᴏꜰᴛɪᴋᴋ"
+local SIZE = UDim2.new(0, 350, 0, 40)
+local POS = UDim2.new(1, -370, 1, -60)
+local Z_MAIN = 2147483647
+
+-- Нижний слой: плотный чёрный контур / тень для читаемости (усилен для +25% чёткости)
+local outline = Instance.new("TextLabel")
+outline.Name = "WatermarkOutline"
+outline.Size = SIZE
+outline.Position = POS
+outline.BackgroundTransparency = 1
+outline.Text = WATERMARK_TEXT
+outline.TextColor3 = Color3.fromRGB(8, 8, 10) -- почти чёрный
+outline.TextSize = 25 -- увеличено для большей чёткости (~25% больше)
+outline.Font = Enum.Font.GothamBold
+outline.TextXAlignment = Enum.TextXAlignment.Right
+outline.ZIndex = Z_MAIN - 1
+outline.Parent = watermarkGui
+
+local outlineStroke = Instance.new("UIStroke")
+outlineStroke.Thickness = 5        -- усиленный плотный контур
+outlineStroke.Color = Color3.fromRGB(0, 0, 0)
+outlineStroke.Transparency = 0
+outlineStroke.Parent = outline
+
+-- Верхний слой: градиент + тонкая обводка + glow
+local main = Instance.new("TextLabel")
+main.Name = "WatermarkMain"
+main.Size = SIZE
+main.Position = POS
+main.BackgroundTransparency = 1
+main.Text = WATERMARK_TEXT
+main.TextColor3 = Color3.fromRGB(255, 255, 255) -- базовый (градиент наложится)
+main.TextSize = 25 -- увеличено для большей чёткости (~25% больше)
+main.Font = Enum.Font.GothamBold
+main.TextXAlignment = Enum.TextXAlignment.Right
+main.ZIndex = Z_MAIN
+main.Parent = watermarkGui
+
+-- Тонкая чёткая обводка у верхнего слоя (поддерживает неон)
+local mainStroke = Instance.new("UIStroke")
+mainStroke.Thickness = 2.6
+mainStroke.Color = Color3.fromRGB(0, 200, 255)
+mainStroke.Transparency = 0.05
+mainStroke.Parent = main
+
+-- Градиент для верхнего слоя (несколько контрольных точек — чтобы не было "одного синего")
+local gradient = Instance.new("UIGradient")
+gradient.Color = ColorSequence.new{
+    ColorSequenceKeypoint.new(0.00, Color3.fromRGB(0, 255, 200)),  -- циан
+    ColorSequenceKeypoint.new(0.30, Color3.fromRGB(0, 200, 255)),  -- голубой
+    ColorSequenceKeypoint.new(0.55, Color3.fromRGB(120, 120, 255)), -- мягкий синий
+    ColorSequenceKeypoint.new(0.75, Color3.fromRGB(200, 80, 255)),  -- фиолетово-розовый
+    ColorSequenceKeypoint.new(1.00, Color3.fromRGB(160, 40, 220))   -- фиолетовый
+}
+gradient.Rotation = 0
+gradient.Parent = main
+
+-- Мягкий glow (анимируемый через AnimationEngine, но с небольшим разбросом)
+AnimationEngine:GlowPulse(main, Color3.fromRGB(0, 200, 255), Color3.fromRGB(200, 80, 255), 3)
+
+-- Анимация градиента: плавное смещение Offset, чтобы не было резкого "залива"
+task.spawn(function()
+    -- плавный цикл туда-сюда (более натурально, чем бесконечный сбег)
+    local dir = 1
+    local pos = 0
+    while main.Parent do
+        pos = pos + dir * 0.0025         -- скорость; уменьшай для медленнее
+        if pos >= 1 then dir = -1; pos = 1 end
+        if pos <= 0 then dir = 1; pos = 0 end
+        gradient.Offset = Vector2.new(pos, 0)
+        RunService.RenderStepped:Wait()
+    end
+end)
+
+-- Toggle: при Delete скрываем оба слоя (плавно)
+local visible = true
+UserInputService.InputBegan:Connect(function(input)
+    if input.KeyCode == Enum.KeyCode.Delete then
+        visible = not visible
+        AnimationEngine:Create(main, TweenInfo.new(0.28, Enum.EasingStyle.Quad, Enum.EasingDirection.InOut), {TextTransparency = visible and 0 or 1})
+        AnimationEngine:Create(outline, TweenInfo.new(0.28, Enum.EasingStyle.Quad, Enum.EasingDirection.InOut), {TextTransparency = visible and 0 or 1})
+        AnimationEngine:Create(mainStroke, TweenInfo.new(0.28, Enum.EasingStyle.Quad, Enum.EasingDirection.InOut), {Transparency = visible and 0.05 or 1})
+        AnimationEngine:Create(outlineStroke, TweenInfo.new(0.28, Enum.EasingStyle.Quad, Enum.EasingDirection.InOut), {Transparency = visible and 0 or 1})
+    end
+end)
+
+
+-- [Остальная часть кода до buildUI остается без изменений]
+
+-- Main UI Builder
+local function buildUI()
+    local screenGui = createScreenGui()
+    
+    -- Performance HUD (без изменений)
+    local perfHUD = Instance.new("Frame")
+    perfHUD.Name = "PerformanceHUD"
+    perfHUD.Size = UDim2.new(0, 180, 0, 90)
+    perfHUD.Position = UDim2.new(0, 20, 0, 20)
+    perfHUD.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+    perfHUD.BackgroundTransparency = 0.3
+    perfHUD.BorderSizePixel = 0
+    perfHUD.Visible = false
+    perfHUD.ZIndex = 2147483647
+    perfHUD.Parent = screenGui
+    
+    local hudCorner = Instance.new("UICorner")
+    hudCorner.CornerRadius = UDim.new(0, 8)
+    hudCorner.Parent = perfHUD
+    
+    local fpsLabel = Instance.new("TextLabel")
+    fpsLabel.Size = UDim2.new(1, -10, 0, 25)
+    fpsLabel.Position = UDim2.new(0, 5, 0, 5)
+    fpsLabel.BackgroundTransparency = 1
+    fpsLabel.Text = "FPS: Calculating..."
+    fpsLabel.TextColor3 = Color3.fromRGB(0, 255, 0)
+    fpsLabel.TextSize = 12
+    fpsLabel.Font = Enum.Font.GothamBold
+    fpsLabel.TextXAlignment = Enum.TextXAlignment.Left
+    fpsLabel.ZIndex = 2147483647
+    fpsLabel.Parent = perfHUD
+    
+    local pingLabel = Instance.new("TextLabel")
+    pingLabel.Size = UDim2.new(1, -10, 0, 25)
+    pingLabel.Position = UDim2.new(0, 5, 0, 30)
+    pingLabel.BackgroundTransparency = 1
+    pingLabel.Text = "PING: Calculating..."
+    pingLabel.TextColor3 = Color3.fromRGB(255, 255, 0)
+    pingLabel.TextSize = 12
+    pingLabel.Font = Enum.Font.GothamBold
+    pingLabel.TextXAlignment = Enum.TextXAlignment.Left
+    pingLabel.ZIndex = 2147483647
+    pingLabel.Parent = perfHUD
+    
+    local memLabel = Instance.new("TextLabel")
+    memLabel.Size = UDim2.new(1, -10, 0, 25)
+    memLabel.Position = UDim2.new(0, 5, 0, 55)
+    memLabel.BackgroundTransparency = 1
+    memLabel.Text = "RAM: Calculating..."
+    memLabel.TextColor3 = Color3.fromRGB(255, 0, 255)
+    memLabel.TextSize = 12
+    memLabel.Font = Enum.Font.GothamBold
+    memLabel.TextXAlignment = Enum.TextXAlignment.Left
+    memLabel.ZIndex = 2147483647
+    memLabel.Parent = perfHUD
+    
+    spawn(function()
+        while perfHUD.Parent do
+            pcall(function()
+                fpsLabel.Text = "FPS: " .. performanceStats.fps
+                pingLabel.Text = "PING: " .. (performanceStats.ping > 0 and performanceStats.ping .. "ms" or "N/A")
+                memLabel.Text = "RAM: " .. performanceStats.memory .. "MB"
+                
+                fpsLabel.TextColor3 = performanceStats.fps >= 240 and Color3.fromRGB(0, 255, 0) or (performanceStats.fps >= 30 and Color3.fromRGB(255, 255, 0) or Color3.fromRGB(255, 0, 0))
+                pingLabel.TextColor3 = performanceStats.ping < 240 and Color3.fromRGB(0, 255, 0) or (performanceStats.ping < 100 and Color3.fromRGB(255, 255, 0) or Color3.fromRGB(255, 0, 0))
+            end)
+            wait(1)
+        end
+    end)
+    
+    -- Make HUD draggable with bounds
+    local draggingHUD = false
+    local dragStartHUD, startPosHUD
+    perfHUD.InputBegan:Connect(function(input)
+        if input.UserInputType == Enum.UserInputType.MouseButton1 then
+            draggingHUD = true
+            dragStartHUD = input.Position
+            startPosHUD = perfHUD.Position
+        end
+    end)
+    UserInputService.InputChanged:Connect(function(input)
+        if draggingHUD and input.UserInputType == Enum.UserInputType.MouseMovement then
+            local delta = input.Position - dragStartHUD
+            local newPos = UDim2.new(startPosHUD.X.Scale, startPosHUD.X.Offset + delta.X, startPosHUD.Y.Scale, startPosHUD.Y.Offset + delta.Y)
+            -- Clamp to screen
+            local screenSize = screenGui.AbsoluteSize
+            local hudSize = perfHUD.AbsoluteSize
+            local clampedX = math.clamp(newPos.X.Offset, 0, screenSize.X - hudSize.X)
+            local clampedY = math.clamp(newPos.Y.Offset, 0, screenSize.Y - hudSize.Y)
+            perfHUD.Position = UDim2.new(0, clampedX, 0, clampedY)
+        end
+    end)
+    UserInputService.InputEnded:Connect(function(input)
+        if input.UserInputType == Enum.UserInputType.MouseButton1 then
+            draggingHUD = false
+        end
+    end)
+    
+    -- Fullscreen overlay
+    local overlay = Instance.new("Frame")
+    overlay.Name = "Overlay"
+    overlay.Size = UDim2.new(1, 0, 1, 0)
+    overlay.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+    overlay.BackgroundTransparency = 0.5
+    overlay.BorderSizePixel = 0
+    overlay.ZIndex = 2147483646
+    overlay.Parent = screenGui
+    
+    -- Main frame
+    local mainFrame = Instance.new("Frame")
+    mainFrame.Name = "MainFrame"
+    mainFrame.Size = UDim2.new(0, 500, 0, 600)
+    mainFrame.Position = UDim2.new(0.5, 0, 0.5, 0) -- Center initially
+    mainFrame.AnchorPoint = Vector2.new(0.5, 0.5)
+    mainFrame.BackgroundColor3 = Color3.fromRGB(15, 15, 25)
+    mainFrame.BorderSizePixel = 0
+    mainFrame.ZIndex = 2147483647
+    mainFrame.Parent = overlay
+    
+    -- Ensure mainFrame stays within screen bounds on creation
+    local screenSize = screenGui.AbsoluteSize
+    local frameSize = mainFrame.AbsoluteSize
+    local halfWidth = frameSize.X / 2
+    local halfHeight = frameSize.Y / 2
+    local clampedX = math.clamp(mainFrame.Position.X.Offset, halfWidth, screenSize.X - halfWidth)
+    local clampedY = math.clamp(mainFrame.Position.Y.Offset, halfHeight, screenSize.Y - halfHeight)
+    mainFrame.Position = UDim2.new(0.5, clampedX, 0.5, clampedY)
+    
+    local mainCorner = Instance.new("UICorner")
+    mainCorner.CornerRadius = UDim.new(0, 20)
+    mainCorner.Parent = mainFrame
+    
+    local bgGradient = Instance.new("UIGradient")
+    bgGradient.Color = ColorSequence.new{
+        ColorSequenceKeypoint.new(0, Color3.fromRGB(25, 25, 40)),
+        ColorSequenceKeypoint.new(0.5, Color3.fromRGB(15, 15, 30)),
+        ColorSequenceKeypoint.new(1, Color3.fromRGB(20, 20, 35))
+    }
+    bgGradient.Rotation = 45
+    bgGradient.Parent = mainFrame
+    
+    AnimationEngine:GlowPulse(mainFrame, Color3.fromRGB(0, 255, 255), Color3.fromRGB(255, 0, 255), 4)
+    
+    -- Header
+    local header = Instance.new("Frame")
+    header.Size = UDim2.new(1, 0, 0, 120)
+    header.BackgroundColor3 = Color3.fromRGB(20, 20, 35)
+    header.BorderSizePixel = 0
+    header.ZIndex = 2147483647
+    header.Parent = mainFrame
+    
+    local headerCorner = Instance.new("UICorner")
+    headerCorner.CornerRadius = UDim.new(0, 20)
+    headerCorner.Parent = header
+    
+    local mainTitle = Instance.new("TextLabel")
+    mainTitle.Size = UDim2.new(1, -140, 0, 40)
+    mainTitle.Position = UDim2.new(0, 20, 0, 15)
+    mainTitle.BackgroundTransparency = 1
+    mainTitle.Text = "AMYR Cheat LOADER"
+    mainTitle.TextColor3 = Color3.fromRGB(255, 255, 255)
+    mainTitle.TextSize = 28
+    mainTitle.Font = Enum.Font.GothamBold
+    mainTitle.TextXAlignment = Enum.TextXAlignment.Left
+    mainTitle.ZIndex = 2147483647
+    mainTitle.Parent = header
+    
+    local subtitle = Instance.new("TextLabel")
+    subtitle.Size = UDim2.new(1, -140, 0, 20)
+    subtitle.Position = UDim2.new(0, 20, 0, 55)
+    subtitle.BackgroundTransparency = 1
+    subtitle.Text = "v3.1"
+    subtitle.TextColor3 = Color3.fromRGB(0, 255, 255)
+    subtitle.TextSize = 14
+    subtitle.Font = Enum.Font.GothamSemibold
+    subtitle.TextXAlignment = Enum.TextXAlignment.Left
+    subtitle.ZIndex = 2147483647
+    subtitle.Parent = header
+    
+    local description = Instance.new("TextLabel")
+    description.Size = UDim2.new(1, -140, 0, 15)
+    description.Position = UDim2.new(0, 20, 0, 75)
+    description.BackgroundTransparency = 1
+    description.Text = "Выберите тему для загрузки (улучшенное меню)"
+    description.TextColor3 = Color3.fromRGB(150, 150, 150)
+    description.TextSize = 12
+    description.Font = Enum.Font.Gotham
+    description.TextXAlignment = Enum.TextXAlignment.Left
+    description.ZIndex = 2147483647
+    description.Parent = header
+    
+    -- Telegram frame
+    local tgFrame = Instance.new("Frame")
+    tgFrame.Size = UDim2.new(0, 200, 0, 30)
+    tgFrame.Position = UDim2.new(0, 20, 0, 90)
+    tgFrame.BackgroundTransparency = 1
+    tgFrame.Parent = header
+    
+    local photoLabel = Instance.new("ImageLabel")
+    photoLabel.Size = UDim2.new(0, 30, 0, 30)
+    photoLabel.Position = UDim2.new(0, 0, 0, 0)
+    photoLabel.BackgroundTransparency = 1
+    photoLabel.Image = PLACEHOLDER_IMAGE
+    photoLabel.ZIndex = 2147483647
+    photoLabel.Parent = tgFrame
+    
+    local tgLabel = Instance.new("TextButton")
+    tgLabel.Size = UDim2.new(0, 170, 0, 30)
+    tgLabel.Position = UDim2.new(0, 35, 0, 0)
+    tgLabel.BackgroundTransparency = 1
+    tgLabel.Text = "t.me/amyr_softikk"
+    tgLabel.TextColor3 = Color3.fromRGB(0, 255, 255)
+    tgLabel.TextSize = 14
+    tgLabel.Font = Enum.Font.GothamBold
+    tgLabel.ZIndex = 2147483647
+    tgLabel.Parent = tgFrame
+    
+    tgLabel.MouseButton1Click:Connect(function()
+        NotificationSystem:Show("Telegram", "Ссылка скопирована в буфер обмена!", "info", 3, "https://t.me/amyr_softikk")
+    end)
+    
+    -- Performance toggle
+    local perfToggle = Instance.new("TextButton")
+    perfToggle.Size = UDim2.new(0, 100, 0, 30)
+    perfToggle.Position = UDim2.new(1, -220, 0, 15)
+    perfToggle.BackgroundColor3 = Color3.fromRGB(50, 50, 70)
+    perfToggle.Text = "FPS HUD"
+    perfToggle.TextColor3 = Color3.fromRGB(255, 255, 255)
+    perfToggle.TextSize = 12
+    perfToggle.Font = Enum.Font.GothamBold
+    perfToggle.ZIndex = 2147483647
+    perfToggle.Parent = header
+    
+    local perfCorner = Instance.new("UICorner")
+    perfCorner.CornerRadius = UDim.new(0, 8)
+    perfCorner.Parent = perfToggle
+    
+    perfToggle.MouseButton1Click:Connect(function()
+        perfHUD.Visible = not perfHUD.Visible
+        AnimationEngine:Bounce(perfToggle)
+    end)
+    
+    -- Reset position button (Fixed)
+    local resetButton = Instance.new("TextButton")
+    resetButton.Size = UDim2.new(0, 100, 0, 30)
+    resetButton.Position = UDim2.new(1, -120, 0, 15)
+    resetButton.BackgroundColor3 = Color3.fromRGB(50, 50, 70)
+    resetButton.Text = "Сброс позиции"
+    resetButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+    resetButton.TextSize = 12
+    resetButton.Font = Enum.Font.GothamBold
+    resetButton.ZIndex = 2147483647
+    resetButton.Parent = header
+    
+    local resetCorner = Instance.new("UICorner")
+    resetCorner.CornerRadius = UDim.new(0, 8)
+    resetCorner.Parent = resetButton
+    
+    resetButton.MouseButton1Click:Connect(function()
+        -- Dynamically calculate center position
+        local screenSize = screenGui.AbsoluteSize
+        local frameSize = mainFrame.AbsoluteSize
+        local centerX = screenSize.X / 2 - frameSize.X / 2
+        local centerY = screenSize.Y / 2 - frameSize.Y / 2
+        mainFrame.Position = UDim2.new(0.5, centerX, 0.5, centerY)
+        print("Reset position to:", mainFrame.Position) -- Debug output
+        AnimationEngine:Bounce(resetButton)
+    end)
+    
+    -- Close button
+    local closeButton = Instance.new("TextButton")
+    closeButton.Size = UDim2.new(0, 40, 0, 40)
+    closeButton.Position = UDim2.new(1, -60, 0, 60)
+    closeButton.BackgroundColor3 = Color3.fromRGB(255, 100, 100)
+    closeButton.Text = "—"
+    closeButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+    closeButton.TextSize = 20
+    closeButton.Font = Enum.Font.GothamBold
+    closeButton.ZIndex = 2147483647
+    closeButton.Parent = header
+    
+    local closeCorner = Instance.new("UICorner")
+    closeCorner.CornerRadius = UDim.new(0, 20)
+    closeCorner.Parent = closeButton
+    
+    closeButton.MouseButton1Click:Connect(function()
+        AnimationEngine:Create(mainFrame,
+            TweenInfo.new(0.5, Enum.EasingStyle.Back, Enum.EasingDirection.In),
+            {Size = UDim2.new(0, 0, 0, 0)},
+            function()
+                screenGui:Destroy()
+            end
+        )
+    end)
+    
+    -- Content area with scrolling
+    local content = Instance.new("ScrollingFrame")
+    content.Name = "Content"
+    content.Size = UDim2.new(1, -40, 1, -160)
+    content.Position = UDim2.new(0, 20, 0, 140)
+    content.BackgroundTransparency = 1
+    content.BorderSizePixel = 0
+    content.ScrollBarThickness = 10 -- Увеличена толщина ползунка для удобства
+    content.ScrollBarImageColor3 = Color3.fromRGB(0, 255, 255) -- Яркий цвет ползунка
+    content.ScrollingDirection = Enum.ScrollingDirection.Y
+    content.ZIndex = 2147483647
+    content.CanvasSize = UDim2.new(0, 0, 0, #themes * 100 + 20)
+    content.Parent = mainFrame
+    
+    -- Search bar
+    local searchBar = Instance.new("TextBox")
+    searchBar.Size = UDim2.new(1, -140, 0, 30)
+    searchBar.Position = UDim2.new(0, 20, 0, 95)
+    searchBar.BackgroundColor3 = Color3.fromRGB(30, 30, 45)
+    searchBar.Text = "Поиск тем..."
+    searchBar.TextColor3 = Color3.fromRGB(150, 150, 150)
+    searchBar.TextSize = 14
+    searchBar.Font = Enum.Font.Gotham
+    searchBar.ZIndex = 2147483647
+    searchBar.Parent = header
+    
+    local searchCorner = Instance.new("UICorner")
+    searchCorner.CornerRadius = UDim.new(0, 8)
+    searchCorner.Parent = searchBar
+    
+    -- Theme buttons
+local colors = {
+    Color3.fromRGB(64, 128, 200),   -- Ocean Theme (Calm blue oceanic visuals)
+    Color3.fromRGB(220, 220, 220),  -- Light Theme (Bright and minimalistic design)
+    Color3.fromRGB(60, 80, 140),    -- Midnight Theme (Dark night sky aesthetics)
+    Color3.fromRGB(40, 40, 40),     -- Dark Theme (Classic dark mode)
+    Color3.fromRGB(139, 0, 0),      -- BloodTheme (Intense red blood-inspired design)
+    Color3.fromRGB(40, 40, 40),     -- DarkTheme (Classic dark mode, повторение для консистентности)
+    Color3.fromRGB(106, 90, 205),   -- GrapeTheme (Rich purple grape-inspired visuals)
+    Color3.fromRGB(220, 220, 220),  -- LightTheme (Bright and minimalistic design, повторение)
+    Color3.fromRGB(60, 80, 140),    -- Midnight (Dark night sky aesthetics, повторение)
+    Color3.fromRGB(64, 128, 200),   -- OceanTheme (Calm blue oceanic visuals, повторение)
+    Color3.fromRGB(128, 128, 128),  -- Sentinel (Guardian-inspired theme)
+    Color3.fromRGB(34, 139, 34),    -- Serpent (Sly serpent-themed design)
+    Color3.fromRGB(75, 0, 130)      -- Synapse (Neural network-inspired visuals)
+}
+    
+    local function updateThemes(filter)
+        filter = filter:lower()
+        local yOffset = 0
+        for _, child in ipairs(content:GetChildren()) do
+            if child:IsA("TextButton") then child:Destroy() end
+        end
+        for i, theme in ipairs(themes) do
+            if theme.name:lower():find(filter) or theme.desc:lower():find(filter) or filter == "" or filter == "поиск тем..." then
+                local button = Instance.new("TextButton")
+                button.Size = UDim2.new(1, -20, 0, 80)
+                button.Position = UDim2.new(0, 10, 0, yOffset)
+                button.BackgroundColor3 = colors[i] or Color3.fromRGB(64, 128, 200)
+                button.Text = theme.name
+                button.TextColor3 = Color3.fromRGB(255, 255, 255)
+                button.TextSize = 18
+                button.Font = Enum.Font.GothamBold
+                button.AutoButtonColor = false
+                button.ZIndex = 2147483647
+                button.Parent = content
+                
+                local btnCorner = Instance.new("UICorner")
+                btnCorner.CornerRadius = UDim.new(0, 15)
+                btnCorner.Parent = button
+                
+                local btnStroke = Instance.new("UIStroke")
+                btnStroke.Color = Color3.fromRGB(255, 255, 255)
+                btnStroke.Thickness = 2
+                btnStroke.Transparency = 0.8
+                btnStroke.Parent = button
+                
+                local descLabel = Instance.new("TextLabel")
+                descLabel.Size = UDim2.new(1, -20, 0, 30)
+                descLabel.Position = UDim2.new(0, 10, 0, 40)
+                descLabel.BackgroundTransparency = 1
+                descLabel.Text = theme.desc
+                descLabel.TextColor3 = Color3.fromRGB(200, 200, 200)
+                descLabel.TextSize = 12
+                descLabel.Font = Enum.Font.Gotham
+                descLabel.TextXAlignment = Enum.TextXAlignment.Left
+                descLabel.TextWrapped = true
+                descLabel.ZIndex = 2147483647
+                descLabel.Parent = button
+                
+                AnimationEngine:GlowPulse(button, colors[i] or Color3.fromRGB(64, 128, 200), Color3.fromRGB(255, 255, 255), 3)
+                
+                button.MouseEnter:Connect(function()
+                    AnimationEngine:Create(button,
+                        TweenInfo.new(0.2, Enum.EasingStyle.Quad, Enum.EasingDirection.Out),
+                        {
+                            Size = UDim2.new(1, -15, 0, 85),
+                            BackgroundColor3 = (colors[i] or Color3.fromRGB(64, 128, 200)):Lerp(Color3.fromRGB(255, 255, 255), 0.2)
+                        }
+                    )
+                    AnimationEngine:ParticleEffect(button)
+                end)
+                
+                button.MouseLeave:Connect(function()
+                    AnimationEngine:Create(button,
+                        TweenInfo.new(0.2, Enum.EasingStyle.Quad, Enum.EasingDirection.Out),
+                        {
+                            Size = UDim2.new(1, -20, 0, 80),
+                            BackgroundColor3 = colors[i] or Color3.fromRGB(64, 128, 200)
+                        }
+                    )
+                end)
+                
+                button.MouseButton1Click:Connect(function()
+                    loadTheme(theme, button, screenGui)
+                end)
+                
+                -- Entrance animation
+                button.Position = UDim2.new(-1, 0, 0, yOffset)
+                AnimationEngine:Create(button,
+                    TweenInfo.new(0.5 + i * 0.1, Enum.EasingStyle.Back, Enum.EasingDirection.Out),
+                    {Position = UDim2.new(0, 10, 0, yOffset)}
+                )
+                
+                yOffset = yOffset + 100
+            end
+        end
+        content.CanvasSize = UDim2.new(0, 0, 0, math.max(yOffset, content.AbsoluteSize.Y)) -- Ensure CanvasSize is sufficient
+    end
+    
+    updateThemes("")
+    
+    searchBar.FocusLost:Connect(function()
+        updateThemes(searchBar.Text)
+    end)
+    
+    searchBar.Focused:Connect(function()
+        if searchBar.Text == "Поиск тем..." then
+            searchBar.Text = ""
+        end
+    end)
+    
+    -- Draggable main frame with improved bounds
+    local dragging = false
+    local dragStart, startPos, lastDelta = nil, nil, Vector2.new(0, 0)
+    
+    header.InputBegan:Connect(function(input)
+        if input.UserInputType == Enum.UserInputType.MouseButton1 then
+            dragging = true
+            dragStart = input.Position
+            startPos = mainFrame.Position
+        end
+    end)
+    
+    UserInputService.InputChanged:Connect(function(input)
+        if dragging and input.UserInputType == Enum.UserInputType.MouseMovement then
+            local delta = input.Position - dragStart
+            local newPos = UDim2.new(startPos.X.Scale, startPos.X.Offset + delta.X, startPos.Y.Scale, startPos.Y.Offset + delta.Y)
+            -- Clamp to screen (accounting for AnchorPoint 0.5,0.5)
+            local screenSize = screenGui.AbsoluteSize
+            local frameSize = mainFrame.AbsoluteSize
+            local halfWidth = frameSize.X / 2
+            local halfHeight = frameSize.Y / 2
+            local clampedX = math.clamp(newPos.X.Offset, halfWidth, screenSize.X - halfWidth)
+            local clampedY = math.clamp(newPos.Y.Offset, halfHeight, screenSize.Y - halfHeight)
+            mainFrame.Position = UDim2.new(0.5, clampedX, 0.5, clampedY)
+            lastDelta = delta
+        end
+    end)
+    
+    UserInputService.InputEnded:Connect(function(input)
+        if input.UserInputType == Enum.UserInputType.MouseButton1 then
+            dragging = false
+            spawn(function()
+                local inertia = lastDelta / 10
+                while math.abs(inertia.X) > 0.1 or math.abs(inertia.Y) > 0.1 do
+                    local newPos = mainFrame.Position + UDim2.new(0, inertia.X, 0, inertia.Y)
+                    local screenSize = screenGui.AbsoluteSize
+                    local frameSize = mainFrame.AbsoluteSize
+                    local halfWidth = frameSize.X / 2
+                    local halfHeight = frameSize.Y / 2
+                    local clampedX = math.clamp(newPos.X.Offset, halfWidth, screenSize.X - halfWidth)
+                    local clampedY = math.clamp(newPos.Y.Offset, halfHeight, screenSize.Y - halfHeight)
+                    mainFrame.Position = UDim2.new(0.5, clampedX, 0.5, clampedY)
+                    inertia = inertia * 0.95
+                    RunService.Heartbeat:Wait()
+                end
+            end)
+        end
+    end)
+    
+    -- Entrance animations
+    mainFrame.Size = UDim2.new(0, 0, 0, 0)
+    overlay.BackgroundTransparency = 1
+    
+    AnimationEngine:Create(overlay, TweenInfo.new(0.5, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {BackgroundTransparency = 0.5})
+    AnimationEngine:Create(mainFrame, TweenInfo.new(0.8, Enum.EasingStyle.Back, Enum.EasingDirection.Out), {Size = UDim2.new(0, 500, 0, 600)})
+    
+    -- Welcome
+    wait(1)
+    NotificationSystem:Show("Добро пожаловать!", "Улучшенный AMYR Cheat Loader запущен! Delete - watermark, F1 - HUD, F2 - меню.", "info", 3)
+    
+    print("AMYR Cheat Loader Free: Initialized successfully!")
+    
+    checkForUpdate("v3.3")
+end
+
+-- Build UI with error handling
+local success, err = pcall(buildUI)
+if not success then
+    warn("AMYR Cheat Loader: Failed to build UI:", err)
+    NotificationSystem:Show("Ошибка!", "Не удалось построить UI: " .. tostring(err), "error", 5)
+end
+
+-- Keyboard shortcuts (Unchanged)
+UserInputService.InputBegan:Connect(function(input, gameProcessed)
+    if gameProcessed then return end
+    
+    if input.KeyCode == Enum.KeyCode.F1 then
+        pcall(function()
+            local gui = CoreGui:FindFirstChildWhichIsA("ScreenGui") or LocalPlayer.PlayerGui:FindFirstChildWhichIsA("ScreenGui")
+            if gui then
+                local hud = gui:FindFirstChild("PerformanceHUD")
+                if hud then
+                    hud.Visible = not hud.Visible
+                end
+            end
+        end)
+    elseif input.KeyCode == Enum.KeyCode.F2 then
+        buildUI()
+    end
+end)
+
+-- Auto-hint
+spawn(function()
+    wait(3)
+    NotificationSystem:Show("Подсказка", "F1 - FPS HUD, F2 - открыть меню, Delete - watermark", "info", 4)
+end)
+
+-- Cleanup
+game.Players.PlayerRemoving:Connect(function(player)
+    if player == LocalPlayer then
+        pcall(function()
+            for _, gui in pairs(CoreGui:GetChildren()) do
+                if gui:IsA("ScreenGui") and gui.Name:find("AMYR_CheatLoader_Free_") then
+                    gui:Destroy()
+                end
+            end
+            for _, gui in pairs(LocalPlayer.PlayerGui:GetChildren()) do
+                if gui:IsA("ScreenGui") and gui.Name:find("AMYR_CheatLoader_Free_") then
+                    gui:Destroy()
+                end
+            end
+            watermarkGui:Destroy()
+        end)
+    end
+end)
