@@ -1,6 +1,6 @@
 -- ╔══════════════════════════════════════════════════════════════╗
 -- ║                    AMYR_SOFTIKK THEME LOADER                 ║
--- ║                          v3.3                                ║
+-- ║                    Free Edition v3.1 (Improved)              ║
 -- ║                    t.me/amyr_softikk                         ║
 -- ╚══════════════════════════════════════════════════════════════╝
 
@@ -15,7 +15,7 @@ local HttpService = game:GetService("HttpService")
 local SoundService = game:GetService("SoundService")
 local GuiService = game:GetService("GuiService")
 
--- Loader Animation System (Updated)
+-- Loader Animation System (Fixed)
 local LoaderAnimation = {}
 local loaderFinished = false
 
@@ -29,11 +29,11 @@ local function createLoader()
     loaderGui.ZIndexBehavior = Enum.ZIndexBehavior.Global
     
     local success = pcall(function()
-        loaderGui.Parent = CoreGui
+        loaderGui.Parent = game:GetService("CoreGui")
     end)
     
     if not success then
-        loaderGui.Parent = Players.LocalPlayer:WaitForChild("PlayerGui")
+        loaderGui.Parent = game:GetService("Players").LocalPlayer:WaitForChild("PlayerGui")
     end
     
     -- Background
@@ -222,7 +222,12 @@ local function animateLoader(loader)
     -- Background gradient rotation
     spawn(function()
         while loader.gui.Parent do
-            TweenService:Create(loader.bgGradient, TweenInfo.new(4, Enum.EasingStyle.Linear), {Rotation = loader.bgGradient.Rotation + 360}):Play()
+            local success, err = pcall(function()
+                game:GetService("TweenService"):Create(loader.bgGradient, TweenInfo.new(4, Enum.EasingStyle.Linear), {Rotation = loader.bgGradient.Rotation + 360}):Play()
+            end)
+            if not success then
+                break
+            end
             wait(4)
         end
     end)
@@ -236,8 +241,12 @@ local function animateLoader(loader)
                 offset = offset + direction * 0.005
                 if offset >= 1 then direction = -1; offset = 1 end
                 if offset <= 0 then direction = 1; offset = 0 end
-                loader.titleGradient.Offset = Vector2.new(offset, 0)
-                RunService.RenderStepped:Wait()
+                if loader.titleGradient.Parent then
+                    loader.titleGradient.Offset = Vector2.new(offset, 0)
+                else
+                    break
+                end
+                game:GetService("RunService").RenderStepped:Wait()
             end
         end
     end)
@@ -245,11 +254,18 @@ local function animateLoader(loader)
     -- Title stroke glow pulse
     spawn(function()
         while loader.gui.Parent do
-            TweenService:Create(loader.titleStroke, TweenInfo.new(1.5, Enum.EasingStyle.Sine, Enum.EasingDirection.InOut), 
-                {Color = Color3.fromRGB(255, 0, 255), Transparency = 0.7}):Play()
+            local success, err = pcall(function()
+                game:GetService("TweenService"):Create(loader.titleStroke, TweenInfo.new(1.5, Enum.EasingStyle.Sine, Enum.EasingDirection.InOut), 
+                    {Color = Color3.fromRGB(255, 0, 255), Transparency = 0.7}):Play()
+            end)
+            if not success then
+                break
+            end
             wait(1.5)
-            TweenService:Create(loader.titleStroke, TweenInfo.new(1.5, Enum.EasingStyle.Sine, Enum.EasingDirection.InOut), 
-                {Color = Color3.fromRGB(0, 255, 255), Transparency = 0.3}):Play()
+            pcall(function()
+                game:GetService("TweenService"):Create(loader.titleStroke, TweenInfo.new(1.5, Enum.EasingStyle.Sine, Enum.EasingDirection.InOut), 
+                    {Color = Color3.fromRGB(0, 255, 255), Transparency = 0.3}):Play()
+            end)
             wait(1.5)
         end
     end)
@@ -265,11 +281,15 @@ local function animateLoader(loader)
                         math.clamp(particle.Position.X.Scale + randomX, 0, 1), 0,
                         math.clamp(particle.Position.Y.Scale + randomY, 0, 1), 0
                     )
-                    TweenService:Create(particle, TweenInfo.new(2, Enum.EasingStyle.Sine), {Position = newPos}):Play()
+                    pcall(function()
+                        game:GetService("TweenService"):Create(particle, TweenInfo.new(2, Enum.EasingStyle.Sine), {Position = newPos}):Play()
+                    end)
                     
                     -- Color change
-                    TweenService:Create(particle, TweenInfo.new(3, Enum.EasingStyle.Linear), 
-                        {BackgroundColor3 = Color3.fromHSV(math.random(180, 300) / 360, 1, 1)}):Play()
+                    pcall(function()
+                        game:GetService("TweenService"):Create(particle, TweenInfo.new(3, Enum.EasingStyle.Linear), 
+                            {BackgroundColor3 = Color3.fromHSV(math.random(180, 300) / 360, 1, 1)}):Play()
+                    end)
                 end
             end
             wait(2)
@@ -279,9 +299,18 @@ local function animateLoader(loader)
     -- Loading bar gradient animation
     spawn(function()
         while loader.gui.Parent do
-            TweenService:Create(loader.barGradient, TweenInfo.new(3, Enum.EasingStyle.Linear), {Rotation = 360}):Play()
+            local success, err = pcall(function()
+                game:GetService("TweenService"):Create(loader.barGradient, TweenInfo.new(3, Enum.EasingStyle.Linear), {Rotation = 360}):Play()
+            end)
+            if not success then
+                break
+            end
             wait(3)
-            loader.barGradient.Rotation = 0
+            if loader.barGradient.Parent then
+                loader.barGradient.Rotation = 0
+            else
+                break
+            end
         end
     end)
 end
@@ -291,18 +320,24 @@ local function showLoaderAndWait()
     local loader = createLoader()
     
     -- Entrance animations
-    TweenService:Create(loader.mainTitle, TweenInfo.new(1, Enum.EasingStyle.Back, Enum.EasingDirection.Out), 
-        {TextTransparency = 0}):Play()
+    pcall(function()
+        game:GetService("TweenService"):Create(loader.mainTitle, TweenInfo.new(1, Enum.EasingStyle.Back, Enum.EasingDirection.Out), 
+            {TextTransparency = 0}):Play()
+    end)
     
     wait(0.3)
-    TweenService:Create(loader.subtitle, TweenInfo.new(0.8, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), 
-        {TextTransparency = 0}):Play()
+    pcall(function()
+        game:GetService("TweenService"):Create(loader.subtitle, TweenInfo.new(0.8, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), 
+            {TextTransparency = 0}):Play()
+    end)
     
     wait(0.3)
-    TweenService:Create(loader.percentText, TweenInfo.new(0.6, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), 
-        {TextTransparency = 0}):Play()
-    TweenService:Create(loader.statusText, TweenInfo.new(0.6, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), 
-        {TextTransparency = 0}):Play()
+    pcall(function()
+        game:GetService("TweenService"):Create(loader.percentText, TweenInfo.new(0.6, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), 
+            {TextTransparency = 0}):Play()
+        game:GetService("TweenService"):Create(loader.statusText, TweenInfo.new(0.6, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), 
+            {TextTransparency = 0}):Play()
+    end)
     
     -- Start animations
     animateLoader(loader)
@@ -325,15 +360,21 @@ local function showLoaderAndWait()
             if not loader.gui.Parent then break end
             
             -- Update status text
-            loader.statusText.Text = stage.text
+            if loader.statusText.Parent then
+                loader.statusText.Text = stage.text
+            end
             
             -- Animate to target progress
             while currentProgress < stage.progress do
                 if not loader.gui.Parent then break end
                 
                 currentProgress = currentProgress + 1
-                loader.loadingBar.Size = UDim2.new(currentProgress / 100, 0, 1, 0)
-                loader.percentText.Text = currentProgress .. "%"
+                if loader.loadingBar.Parent then
+                    loader.loadingBar.Size = UDim2.new(currentProgress / 100, 0, 1, 0)
+                end
+                if loader.percentText.Parent then
+                    loader.percentText.Text = currentProgress .. "%"
+                end
                 
                 wait(math.random(30, 80) / 1000)
             end
@@ -346,25 +387,33 @@ local function showLoaderAndWait()
         wait(0.8)
         
         -- Exit animation
-        TweenService:Create(loader.background, TweenInfo.new(0.8, Enum.EasingStyle.Quad, Enum.EasingDirection.In), 
-            {BackgroundTransparency = 1}):Play()
+        pcall(function()
+            game:GetService("TweenService"):Create(loader.background, TweenInfo.new(0.8, Enum.EasingStyle.Quad, Enum.EasingDirection.In), 
+                {BackgroundTransparency = 1}):Play()
+        end)
         
         for _, particle in pairs(loader.particles) do
-            TweenService:Create(particle, TweenInfo.new(0.8, Enum.EasingStyle.Quad, Enum.EasingDirection.In), 
-                {BackgroundTransparency = 1}):Play()
+            pcall(function()
+                game:GetService("TweenService"):Create(particle, TweenInfo.new(0.8, Enum.EasingStyle.Quad, Enum.EasingDirection.In), 
+                    {BackgroundTransparency = 1}):Play()
+            end)
         end
         
-        TweenService:Create(loader.mainTitle, TweenInfo.new(0.8, Enum.EasingStyle.Quad, Enum.EasingDirection.In), 
-            {TextTransparency = 1}):Play()
-        TweenService:Create(loader.subtitle, TweenInfo.new(0.8, Enum.EasingStyle.Quad, Enum.EasingDirection.In), 
-            {TextTransparency = 1}):Play()
-        TweenService:Create(loader.percentText, TweenInfo.new(0.8, Enum.EasingStyle.Quad, Enum.EasingDirection.In), 
-            {TextTransparency = 1}):Play()
-        TweenService:Create(loader.statusText, TweenInfo.new(0.8, Enum.EasingStyle.Quad, Enum.EasingDirection.In), 
-            {TextTransparency = 1}):Play()
+        pcall(function()
+            game:GetService("TweenService"):Create(loader.mainTitle, TweenInfo.new(0.8, Enum.EasingStyle.Quad, Enum.EasingDirection.In), 
+                {TextTransparency = 1}):Play()
+            game:GetService("TweenService"):Create(loader.subtitle, TweenInfo.new(0.8, Enum.EasingStyle.Quad, Enum.EasingDirection.In), 
+                {TextTransparency = 1}):Play()
+            game:GetService("TweenService"):Create(loader.percentText, TweenInfo.new(0.8, Enum.EasingStyle.Quad, Enum.EasingDirection.In), 
+                {TextTransparency = 1}):Play()
+            game:GetService("TweenService"):Create(loader.statusText, TweenInfo.new(0.8, Enum.EasingStyle.Quad, Enum.EasingDirection.In), 
+                {TextTransparency = 1}):Play()
+        end)
         
         wait(0.8)
-        loader.gui:Destroy()
+        if loader.gui and loader.gui.Parent then
+            loader.gui:Destroy()
+        end
         loaderFinished = true
     end)
     
@@ -392,15 +441,15 @@ local PLACEHOLDER_IMAGE = "rbxassetid://1847902752"  -- Replace with actual Robl
 
 -- Theme Database
 local themes = {
-    { name = "Ocean Theme", url = "https://raw.githubusercontent.com/amyrka238/amyr_soft/refs/heads/main/hvh/v2/v3/Ocean.lua", desc = "Calm blue oceanic visuals" },
-    { name = "Light Theme", url = "https://raw.githubusercontent.com/amyrka238/amyr_soft/refs/heads/main/hvh/v2/v3/LightTheme.lua", desc = "Bright and minimalistic design" },
-    { name = "Midnight Theme", url = "https://raw.githubusercontent.com/amyrka238/amyr_soft/refs/heads/main/hvh/v2/v3/Midnight.lua", desc = "Dark night sky aesthetics" },
-    { name = "Dark Theme", url = "https://raw.githubusercontent.com/amyrka238/amyr_soft/refs/heads/main/hvh/v2/v3/DarkTheme.lua", desc = "Classic dark mode" },
-    { name = "BloodTheme", url = "https://raw.githubusercontent.com/amyrka238/amyr_soft/refs/heads/main/hvh/v2/v3/BloodTheme.lua", desc = "Intense red blood-inspired design" },
-    { name = "GrapeTheme", url = "https://raw.githubusercontent.com/amyrka238/amyr_soft/refs/heads/main/hvh/v2/v3/GrapeTheme.lua", desc = "Rich purple grape-inspired visuals" },
-    { name = "Sentinel", url = "https://raw.githubusercontent.com/amyrka238/amyr_soft/refs/heads/main/hvh/v2/v3/Sentinel.lua", desc = "Guardian-inspired theme" },
-    { name = "Serpent", url = "https://raw.githubusercontent.com/amyrka238/amyr_soft/refs/heads/main/hvh/v2/v3/Serpent.lua", desc = "Sly serpent-themed design" },
-    { name = "Synapse", url = "https://raw.githubusercontent.com/amyrka238/amyr_soft/refs/heads/main/hvh/v2/v3/Synapse.lua", desc = "Neural network-inspired visuals" }
+    { name = "Ocean Theme", url = "https://raw.githubusercontent.com/amyrka238/amyr_soft/refs/heads/main/hvh/v2/Counter-Blox%20OceanTheme", desc = "Calm blue oceanic visuals" },
+    { name = "Light Theme", url = "https://raw.githubusercontent.com/amyrka238/amyr_soft/refs/heads/main/hvh/v2/Counter-Blox%20LightTheme", desc = "Bright and minimalistic design" },
+    { name = "Midnight Theme", url = "https://raw.githubusercontent.com/amyrka238/amyr_soft/refs/heads/main/hvh/v2/Counter-Blox%20Midnight", desc = "Dark night sky aesthetics" },
+    { name = "Dark Theme", url = "https://raw.githubusercontent.com/amyrka238/amyr_soft/refs/heads/main/hvh/v2/Counter-Blox%20DarkTheme", desc = "Classic dark mode" },
+    { name = "BloodTheme", url = "https://raw.githubusercontent.com/amyrka238/amyr_soft/refs/heads/main/hvh/v2/Counter-Blox%20BloodTheme", desc = "Intense red blood-inspired design" },
+    { name = "GrapeTheme", url = "https://raw.githubusercontent.com/amyrka238/amyr_soft/refs/heads/main/hvh/v2/Counter-Blox%20GrapeTheme", desc = "Rich purple grape-inspired visuals" },
+    { name = "Sentinel", url = "https://raw.githubusercontent.com/amyrka238/amyr_soft/refs/heads/main/hvh/v2/Counter-Blox%20Sentinel", desc = "Guardian-inspired theme" },
+    { name = "Serpent", url = "https://raw.githubusercontent.com/amyrka238/amyr_soft/refs/heads/main/hvh/v2/Counter-Blox%20Serpent", desc = "Sly serpent-themed design" },
+    { name = "Synapse", url = "https://raw.githubusercontent.com/amyrka238/amyr_soft/refs/heads/main/hvh/v2/Counter-Blox%20Synapse", desc = "Neural network-inspired visuals" }
 }
 
 -- Performance Monitor
@@ -974,7 +1023,7 @@ local function buildUI()
     subtitle.Size = UDim2.new(1, -140, 0, 20)
     subtitle.Position = UDim2.new(0, 20, 0, 55)
     subtitle.BackgroundTransparency = 1
-    subtitle.Text = "v3.3"
+    subtitle.Text = "Free Edition v3.1 (Improved)"
     subtitle.TextColor3 = Color3.fromRGB(0, 255, 255)
     subtitle.TextSize = 14
     subtitle.Font = Enum.Font.GothamSemibold
@@ -1302,7 +1351,7 @@ local colors = {
     
     print("AMYR Cheat Loader Free: Initialized successfully!")
     
-    checkForUpdate("v3.3")
+    checkForUpdate("v3.1")
 end
 
 -- Build UI with error handling
