@@ -1,8 +1,5 @@
-# PyIt - external cheat cs2 in python
+# amyr - external cheat cs2 in python
 
-PyIt is a completely free, open-source cheat. It's 100% written in Python, without requiring the installation of third-party libraries outside of the package manager "pip." Without writing to the game's memory, it offers the following features: WH, Aim, Trigger Bot.
-
-![2024-08-13_12-36-03](https://github.com/user-attachments/assets/580fa55b-0c7d-45bb-ba36-c0ae01d0b9b9)
 
 # To install:
 
@@ -37,5 +34,4 @@ python px.py
 # LICENSE
 This project is licensed under the terms of the MIT License - see the `LICENSE` file for details.
 
-Go to the Discord channel - https://discord.gg/n89PDURbTg
 :D
